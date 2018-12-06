@@ -30,18 +30,25 @@ const thisUtil = {
                 fCount++;
             }
         });
-        let pairsMap = {}
         let pairsList = []
+        let count=0
+        let amap = new Set()
         for(let fpath1 in sourceMap){
             for(let fpath2 in sourceMap){
-                if(fpath1 !== fpath2 && !pairsMap[fpath1+fpath2] && !pairsMap[fpath2+fpath1]) {
+                let hash1 = md5Util(fpath1)
+                let hash2 = md5Util(fpath2)
+                //if(fpath1 !== fpath2 && !amap[hash1+hash2] && !amap[hash2+hash1]) {
+                if(fpath1 !== fpath2 && !amap.has(hash1+hash2) && !amap.has(hash2+hash1)) {
+                    count++;
                     let arr = [fpath1, fpath2];
                     arr.sort();
                     pairsList.push({
                         a: arr[0],
                         b: arr[1]
                     })
-                    pairsMap[arr[0]+arr[1]]=true;
+                    if(count % 55555 === 0) console.log(count);
+                    //amap[hash1+hash2]=1;
+                    amap.add(hash1+hash2)
                 }
             }
         }
@@ -52,7 +59,7 @@ const thisUtil = {
             pairs.push(o);
             pairsCount++;
         }
-        console.log('fCount', fCount, pairs.length)
+        console.log('fCount=', fCount, 'pairs=', pairs.length)
         fs.writeFileSync('./debuginfo/pairs.json', JSON.stringify(pairs))
         return {
             pairs,
