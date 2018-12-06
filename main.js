@@ -21,4 +21,5 @@ var terminalOps = minimist(process.argv.slice(2), cmdOptions);
 let codePath = terminalOps.src;
 
 console.log(codePath)
+codePath = pathutil.resolve(__dirname, codePath)
 reviewer.check(codePath, [/.js$/])

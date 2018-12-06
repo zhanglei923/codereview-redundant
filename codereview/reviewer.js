@@ -1,4 +1,5 @@
 var fs = require('fs');
+var _ = require('lodash');
 var pathutil = require('path');
 var jsdiff = require('diff');
 var decomment = require('decomment');
@@ -35,7 +36,9 @@ const thisUtil = {
     check: (codePath, filters) =>{
         fs.writeFileSync('./fmap.txt', JSON.stringify(fmap))
         let pairs = thisUtil.getPairs(codePath, filters);
-        let rpt = []
+        let report = []
+        let count = 0;
+        console.log('pairs', pairs.length);
         for(let i=0;i<pairs.length;i++){
             let path1 = pairs[i].a;
             let path2 = pairs[i].b;
@@ -53,10 +56,16 @@ const thisUtil = {
 
             //console.log(source1, source2)
             let reddntLine = thisUtil.getRedundantLine(source1, source2);
-            console.log(reddntLine, path1+':'+path2)
-            //rpt.push(reddntLine)
+            //console.log(reddntLine, path1+':'+path2)
+            count++;
+            if(count%19===0) console.log(count,'/', pairs.length)
+            report.push({
+                path1, path2,
+                reddntLine
+            })
         }
-        fs.writeFileSync('./rpt.json', JSON.stringify(rpt))
+        report = _.sortBy(report, 'reddntLine').reverse();
+        fs.writeFileSync('./report.json', JSON.stringify(report))
     },
     getRedundantLine: (source1, source2) =>{
         let redundantLine = 0;
