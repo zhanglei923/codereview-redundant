@@ -5,7 +5,7 @@ var jsdiff = require('diff');
 var decomment = require('decomment');
 var minimist = require('minimist');
 
-let fileUtil = require('./util/fileUtil')
+let reviewer = require('./codereview/reviewer')
 
 //test:
 //> node main --src D:/workspaces/codereview-redundant-test/source/oa
@@ -23,8 +23,4 @@ var terminalOps = minimist(process.argv.slice(2), cmdOptions);
 let codePath = terminalOps.src;
 
 console.log(codePath)
-
-fileUtil.eachContent(codePath, [/\.js$/], (src, fpath)=>{
-    console.log(fpath)
-
-})
+reviewer.check(codePath, [/.js$/])
