@@ -5,7 +5,7 @@ var jsdiff = require('diff');
 var decomment = require('decomment');
 var minimist = require('minimist');
 
-let fileUtil = require('./codereview/fileUtil')
+let fileUtil = require('./util/fileUtil')
 
 //test:
 //> node main --src D:/workspaces/codereview-redundant-test/source/oa
