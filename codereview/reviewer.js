@@ -31,21 +31,26 @@ const thisUtil = {
             }
         });
         let pairsMap = {}
+        let pairsList = []
         for(let fpath1 in sourceMap){
             for(let fpath2 in sourceMap){
-                if(fpath1 !== fpath2) {
+                if(fpath1 !== fpath2 && !pairsMap[fpath1+fpath2] && !pairsMap[fpath2+fpath1]) {
                     let arr = [fpath1, fpath2];
                     arr.sort();
-                    pairsMap[arr.join(',')]=true;
+                    pairsList.push({
+                        a: arr[0],
+                        b: arr[1]
+                    })
+                    pairsMap[arr[0]+arr[1]]=true;
                 }
             }
         }
         let pairsCount = 0; // size = (n*(n-1))/2
         let pairs = []
-        for(let name in pairsMap){
-            let arr = name.split(',');
-            pairs.push({a: arr[0], b: arr[1]})
-            pairsCount++
+        for(let i=0;i<pairsList.length;i++){
+            let o = pairsList[i];
+            pairs.push(o);
+            pairsCount++;
         }
         console.log('fCount', fCount, pairs.length)
         fs.writeFileSync('./debuginfo/pairs.json', JSON.stringify(pairs))
