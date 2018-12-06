@@ -37,8 +37,10 @@ const thisUtil = {
         let pairs = thisUtil.getPairs(codePath, filters);
         let rpt = []
         for(let i=0;i<pairs.length;i++){
-            let source1 = fmap[pairs[i].a];
-            let source2 = fmap[pairs[i].b];
+            let path1 = pairs[i].a;
+            let path2 = pairs[i].b;
+            let source1 = fmap[path1];
+            let source2 = fmap[path2];
 
             source1 = decomment(source1);
             source2 = decomment(source2);
@@ -51,15 +53,21 @@ const thisUtil = {
 
             //console.log(source1, source2)
             let reddntLine = thisUtil.getRedundantLine(source1, source2);
-            rpt.push(reddntLine)
+            console.log(reddntLine, path1+':'+path2)
+            //rpt.push(reddntLine)
         }
         fs.writeFileSync('./rpt.json', JSON.stringify(rpt))
     },
     getRedundantLine: (source1, source2) =>{
+        let redundantLine = 0;
         //确保文件较小的在前，文件较大的在后
-        var diff1 = source1.length < source2.length ? jsdiff.diffTrimmedLines(source1, source2) : jsdiff.diffTrimmedLines(source2, source1);
-        return diff1;
-
+        var diffInfo = source1.length < source2.length ? jsdiff.diffTrimmedLines(source1, source2) : jsdiff.diffTrimmedLines(source2, source1);
+        diffInfo.forEach((info)=>{
+            if(!info.removed && !info.added) {
+                redundantLine += info.count;
+            }
+        })
+        return redundantLine;
     }
 }
 module.exports = thisUtil;
