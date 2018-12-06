@@ -30,11 +30,11 @@ const thisUtil = {
             pairsCount++
         }
         console.log('fCount', fCount, pairs.length)
-        fs.writeFileSync('./a.txt', JSON.stringify(pairs))
+        fs.writeFileSync('./debuginfo/a.txt', JSON.stringify(pairs))
         return pairs;
     },
     check: (codePath, filters) =>{
-        fs.writeFileSync('./fmap.txt', JSON.stringify(fmap))
+        fs.writeFileSync('./debuginfo/fmap.txt', JSON.stringify(fmap))
         let pairs = thisUtil.getPairs(codePath, filters);
         let report = []
         let count = 0;
@@ -58,14 +58,14 @@ const thisUtil = {
             let reddntLine = thisUtil.getRedundantLine(source1, source2);
             //console.log(reddntLine, path1+':'+path2)
             count++;
-            if(count%19===0) console.log(count,'/', pairs.length)
+            if(count % 23 === 0) console.log(count,'/', pairs.length)
             report.push({
                 path1, path2,
                 reddntLine
             })
         }
         report = _.sortBy(report, 'reddntLine').reverse();
-        fs.writeFileSync('./report.json', JSON.stringify(report))
+        fs.writeFileSync('./debuginfo/report.json', JSON.stringify(report))
     },
     getRedundantLine: (source1, source2) =>{
         let redundantLine = 0;
