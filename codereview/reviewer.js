@@ -1,10 +1,15 @@
 var fs = require('fs');
 var _ = require('lodash');
+var md5Util = require("blueimp-md5")//https://github.com/blueimp/JavaScript-MD5
 var pathutil = require('path');
 var jsdiff = require('diff');
 var decomment = require('decomment');
 let fileUtil = require('../util/fileUtil')
+
+let lineBrkReg = /(\r\n){1,}/g
+let lineBrkString = '\r\n';
 let sourceMap = {};
+
 const thisUtil = {
     getPairs: (codePath, filters)=>{
         let fCount = 0;
@@ -40,7 +45,25 @@ const thisUtil = {
         let info = thisUtil.getPairs(codePath, filters);
         let pairs = info.pairs;
         let sourceMap = info.sourceMap;
-        thisUtil.checkPairs(pairs, sourceMap);
+        return thisUtil.checkPairs(pairs, sourceMap);
+    },
+    _asMd5Lines: (source) =>{
+        let arr = source.split(lineBrkReg)
+        let arr2 = [];
+        arr.forEach((line)=>{
+            arr2.push(md5Util(line));
+        })
+        return arr2.join(lineBrkString);
+    },
+    _asHalfLines: (source) =>{
+        //return source;
+        let arr = source.split(lineBrkReg)
+        let arr2 = [];
+        arr.forEach((line, i)=>{
+            //console.log(i, line, line===lineBrkString)
+            if(i%2===0 && line !== lineBrkString) arr2.push(line);
+        })
+        return arr2.join(lineBrkString);
     },
     checkPairs: (pairs, srcmap) =>{
         fs.writeFileSync('./debuginfo/srcmap.json', JSON.stringify(srcmap))
@@ -56,11 +79,16 @@ const thisUtil = {
             source1 = decomment(source1);
             source2 = decomment(source2);
 
-            source1 = source1.replace(/(\r\n){1,}/g, '\n');
-            source2 = source2.replace(/(\r\n){1,}/g, '\n');
+            // source1 = thisUtil._asMd5Lines(source1);
+            // source2 = thisUtil._asMd5Lines(source2);
+            // source1 = thisUtil._asHalfLines(source1);
+            // source2 = thisUtil._asHalfLines(source2);
 
-            source1 = source1.replace(/(\n){1,}/g, '\n');
-            source2 = source2.replace(/(\n){1,}/g, '\n');
+            source1 = source1.replace(lineBrkReg, lineBrkString);
+            source2 = source2.replace(lineBrkReg, lineBrkString);
+
+            // source1 = source1.replace(/(\r\n){1,}/g, lineBrkString);
+            // source2 = source2.replace(/(\r\n){1,}/g, lineBrkString);
 
             //console.log(source1, source2)
             let reddntLine = thisUtil.getRedundantLine(source1, source2);
@@ -73,7 +101,7 @@ const thisUtil = {
             })
         }
         report = _.sortBy(report, 'reddntLine').reverse();
-        fs.writeFileSync('./debuginfo/report.json', JSON.stringify(report))
+        return report;
     },
     getRedundantLine: (source1, source2) =>{
         let redundantLine = 0;

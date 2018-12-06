@@ -22,4 +22,8 @@ let codePath = terminalOps.src;
 
 console.log(codePath)
 codePath = pathutil.resolve(__dirname, codePath)
-reviewer.check(codePath, [/.js$/])
+
+let t0 = new Date()
+let report = reviewer.check(codePath, [/.js$/])
+console.log('cost', new Date() - t0)
+fs.writeFileSync('./debuginfo/report.json', JSON.stringify(report))

@@ -6,6 +6,7 @@
   "author": "zhanglei <zhang.lei.923@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "blueimp-md5": "^2.10.0",
     "decomment": "^0.9.2",
     "diff": "^3.5.0",
     "lodash": "^4.17.11",
