@@ -1,0 +1,11 @@
+{
+  "name": "codereview-redundant",
+  "version": "0.0.1",
+  "main": "main.js",
+  "repository": "https://github.com/zhanglei923/codereview-redundant.git",
+  "author": "zhanglei <zhang.lei.923@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "diff": "^3.5.0"
+  }
+}
