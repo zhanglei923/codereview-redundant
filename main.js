@@ -1,14 +1,12 @@
 var fs = require('fs');
 var pathutil = require('path');
 var _ = require('lodash');
-var jsdiff = require('diff');
-var decomment = require('decomment');
 var minimist = require('minimist');
 
 let reviewer = require('./codereview/reviewer')
 
 //test:
-//> node main --src D:/workspaces/codereview-redundant-test/source/oa
+//> node main --src D:/workspaces/codereview-redundant-test/source/oa/js/approval
 
 let dataPath = pathutil.resolve(__dirname,'../codereview-redundant-data/')
 if (!fs.existsSync(dataPath)){fs.mkdirSync(dataPath)}
