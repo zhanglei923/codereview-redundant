@@ -36,8 +36,8 @@ const thisUtil = {
         //let amap = new Set()
         let amap = {};
         for(let fpath1 in sourceMap){
+            let hash1 = md5Util(fpath1)
             for(let fpath2 in sourceMap){
-                let hash1 = md5Util(fpath1)
                 let hash2 = md5Util(fpath2)
                 if(fpath1 !== fpath2 && !amap[hash1+hash2] && !amap[hash2+hash1]) {
                 //if(fpath1 !== fpath2 && !amap.has(hash1+hash2) && !amap.has(hash2+hash1)) {
