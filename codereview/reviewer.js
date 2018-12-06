@@ -23,7 +23,7 @@ const thisUtil = {
         let fCount = 0;
         fileUtil.eachContent(codePath, [/\.js$/], (src, fpath)=>{
             if(runFilters(fpath)){
-                sourceMap[fpath] = src;
+                sourceMap[fpath] = true;
                 fCount++;
             }
         });
@@ -83,8 +83,8 @@ const thisUtil = {
         for(let i=0;i<pairs.length;i++){
             let path1 = pairs[i].a;
             let path2 = pairs[i].b;
-            let source1 = srcmap[path1];
-            let source2 = srcmap[path2];
+            let source1 = fs.readFileSync(path1,'utf8');//srcmap[path1];
+            let source2 = fs.readFileSync(path2,'utf8');//srcmap[path2];
 
             source1 = decomment(source1);
             source2 = decomment(source2);
