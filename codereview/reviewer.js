@@ -30,6 +30,7 @@ const thisUtil = {
                 fCount++;
             }
         });
+        let shouldSize = (fCount * (fCount-1))/2;
         let pairsList = []
         let count=0
         //let amap = new Set()
@@ -47,19 +48,13 @@ const thisUtil = {
                         a: arr[0],
                         b: arr[1]
                     })
-                    if(count % 55555 === 0) console.log(count);
+                    if(count % 55555 === 0) console.log(count,shouldSize);
                     amap[hash1+hash2]=1;
                     //amap.add(hash1+hash2)
                 }
             }
         }
-        let pairsCount = 0; // size = (n*(n-1))/2
-        let pairs = []
-        for(let i=0;i<pairsList.length;i++){
-            let o = pairsList[i];
-            pairs.push(o);
-            pairsCount++;
-        }
+        let pairs = pairsList;
         console.log('fCount=', fCount, 'pairs=', pairs.length)
         fs.writeFileSync('./debuginfo/pairs.json', JSON.stringify(pairs))
         return {
