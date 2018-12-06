@@ -38,4 +38,6 @@ filterFuns.push((fpath)=>{
 let t0 = new Date()
 let report = reviewer.check(codePath, [/.js$/], filterFuns)
 console.log('cost', new Date() - t0)
+
 fs.writeFileSync('./debuginfo/report.json', JSON.stringify(report))
+fs.writeFileSync(pathutil.resolve(dataPath, './report.json'), JSON.stringify(report))
