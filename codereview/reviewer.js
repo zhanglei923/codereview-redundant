@@ -13,23 +13,24 @@ let sourceMap = {};
 const thisUtil = {
     loadFilesInfo: (codePath, filters, filterFuns)=>{
         if(typeof filterFuns === 'undefined') filterFuns = [()=>{return true;}]        
-        let runFilters = (fpath1, fpath2)=>{
+        let runFilters = (fpath)=>{
             let ok = true;
             filterFuns.forEach((filter)=>{
-                if(filter(fpath1)===false) ok = false;
-                if(filter(fpath2)===false) ok = false;
+                if(filter(fpath)===false) ok = false;
             })
             return ok;
         };
         let fCount = 0;
         fileUtil.eachContent(codePath, [/\.js$/], (src, fpath)=>{
-            sourceMap[fpath] = src;
-            fCount++;
+            if(runFilters(fpath)){
+                sourceMap[fpath] = src;
+                fCount++;
+            }
         });
         let pairsMap = {}
         for(let fpath1 in sourceMap){
             for(let fpath2 in sourceMap){
-                if(fpath1 !== fpath2 && runFilters(fpath1, fpath2)) {
+                if(fpath1 !== fpath2) {
                     let arr = [fpath1, fpath2];
                     arr.sort();
                     pairsMap[arr.join(',')]=true;

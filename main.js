@@ -32,6 +32,8 @@ filterFuns.push((fpath)=>{
     if(/default_cn/g.test(fpath)) return false;
     if(/province_data/g.test(fpath)) return false;
     if(/\-sdk\-/g.test(fpath)) return false;
+    
+    //if(/Ctrl\.js$/g.test(fpath)) return false;
 })
 
 
