@@ -22,6 +22,9 @@ const thisUtil = {
         };
         let fCount = 0;
         fileUtil.eachContent(codePath, [/\.js$/], (src, fpath)=>{
+            fpath = fpath.replace(/\\{1,}/, '/');
+            fpath = fpath.replace(/\/{1,}/, '/');
+            //console.log(runFilters(fpath), fpath)
             if(runFilters(fpath)){
                 sourceMap[fpath] = true;
                 fCount++;
