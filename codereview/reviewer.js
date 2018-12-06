@@ -11,7 +11,16 @@ let lineBrkString = '\r\n';
 let sourceMap = {};
 
 const thisUtil = {
-    getPairs: (codePath, filters)=>{
+    loadFilesInfo: (codePath, filters, filterFuns)=>{
+        if(typeof filterFuns === 'undefined') filterFuns = [()=>{return true;}]        
+        let runFilters = (fpath1, fpath2)=>{
+            let ok = true;
+            filterFuns.forEach((filter)=>{
+                if(filter(fpath1)===false) ok = false;
+                if(filter(fpath2)===false) ok = false;
+            })
+            return ok;
+        };
         let fCount = 0;
         fileUtil.eachContent(codePath, [/\.js$/], (src, fpath)=>{
             sourceMap[fpath] = src;
@@ -20,7 +29,7 @@ const thisUtil = {
         let pairsMap = {}
         for(let fpath1 in sourceMap){
             for(let fpath2 in sourceMap){
-                if(fpath1 !== fpath2) {
+                if(fpath1 !== fpath2 && runFilters(fpath1, fpath2)) {
                     let arr = [fpath1, fpath2];
                     arr.sort();
                     pairsMap[arr.join(',')]=true;
@@ -41,8 +50,8 @@ const thisUtil = {
             sourceMap
         };
     },
-    check: (codePath, filters) =>{
-        let info = thisUtil.getPairs(codePath, filters);
+    check: (codePath, filters, filterFuns) =>{
+        let info = thisUtil.loadFilesInfo(codePath, filters, filterFuns);
         let pairs = info.pairs;
         let sourceMap = info.sourceMap;
         return thisUtil.checkPairs(pairs, sourceMap);
