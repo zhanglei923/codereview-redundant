@@ -32,13 +32,14 @@ const thisUtil = {
         });
         let pairsList = []
         let count=0
-        let amap = new Set()
+        //let amap = new Set()
+        let amap = {};
         for(let fpath1 in sourceMap){
             for(let fpath2 in sourceMap){
                 let hash1 = md5Util(fpath1)
                 let hash2 = md5Util(fpath2)
-                //if(fpath1 !== fpath2 && !amap[hash1+hash2] && !amap[hash2+hash1]) {
-                if(fpath1 !== fpath2 && !amap.has(hash1+hash2) && !amap.has(hash2+hash1)) {
+                if(fpath1 !== fpath2 && !amap[hash1+hash2] && !amap[hash2+hash1]) {
+                //if(fpath1 !== fpath2 && !amap.has(hash1+hash2) && !amap.has(hash2+hash1)) {
                     count++;
                     let arr = [fpath1, fpath2];
                     arr.sort();
@@ -47,8 +48,8 @@ const thisUtil = {
                         b: arr[1]
                     })
                     if(count % 55555 === 0) console.log(count);
-                    //amap[hash1+hash2]=1;
-                    amap.add(hash1+hash2)
+                    amap[hash1+hash2]=1;
+                    //amap.add(hash1+hash2)
                 }
             }
         }
