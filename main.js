@@ -7,9 +7,10 @@ let reviewer = require('./codereview/reviewer')
 
 //test:
 //> node main --src D:/workspaces/codereview-redundant-test/source/oa/js/approval
-
+//> node main.js --src E:/workspaceGerrit/_sub_branches/apps-ingage-web/src/main/webapp/static/source
 let dataPath = pathutil.resolve(__dirname,'../codereview-redundant-data/')
 if (!fs.existsSync(dataPath)){fs.mkdirSync(dataPath)}
+if (!fs.existsSync('./debuginfo')){fs.mkdirSync('./debuginfo')}
 
 var cmdOptions = {
     string: 'src',

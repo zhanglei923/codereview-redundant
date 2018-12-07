@@ -36,26 +36,28 @@ const thisUtil = {
         //let amap = new Set()
         let amap = {};
         for(let fpath1 in sourceMap){
-            let hash1 = md5Util(fpath1)
             for(let fpath2 in sourceMap){
-                let hash2 = md5Util(fpath2)
-                if(fpath1 !== fpath2 && !amap[hash1+hash2] && !amap[hash2+hash1]) {
-                //if(fpath1 !== fpath2 && !amap.has(hash1+hash2) && !amap.has(hash2+hash1)) {
-                    count++;
-                    let arr = [fpath1, fpath2];
-                    arr.sort();
-                    pairsList.push({
-                        a: arr[0],
-                        b: arr[1]
-                    })
-                    if(count % 55555 === 0) console.log(count,shouldSize);
-                    amap[hash1+hash2]=1;
-                    //amap.add(hash1+hash2)
+                if(fpath1 !== fpath2){
+                    let hash1 = md5Util(fpath2+fpath1)
+                    let hash2 = md5Util(fpath1+fpath2)
+                    if(!amap[hash1] && !amap[hash2]) {
+                    //if(fpath1 !== fpath2 && !amap.has(hash1+hash2) && !amap.has(hash2+hash1)) {
+                        count++;
+                        let arr = [fpath1, fpath2];
+                        arr.sort();
+                        pairsList.push({
+                            a: arr[0],
+                            b: arr[1]
+                        })
+                        if(count % 77777 === 0) console.log(count,shouldSize);
+                        amap[hash1]=1;
+                        //amap.add(hash1+hash2)
+                    }
                 }
             }
         }
         let pairs = pairsList;
-        console.log('fCount=', fCount, 'pairs=', pairs.length)
+        console.log('fCount=', fCount, 'pairs=', pairs.length+'='+shouldSize)
         fs.writeFileSync('./debuginfo/pairs.json', JSON.stringify(pairs))
         return {
             pairs,
