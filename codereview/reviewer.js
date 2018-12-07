@@ -48,15 +48,17 @@ const thisUtil = {
                         pairsList.push({
                             a: arr[0],
                             b: arr[1]
-                        })
-                        if(count % 77777 === 0) console.log('pairs='+count+'/'+shouldSize, ' complete=', (count/shouldSize)*100+'%')
+                        });
+                        if(count % 77777 === 0) {
+                            console.log('pairs='+count+'/'+shouldSize, ' complete=', (count/shouldSize)*100+'%')
+                        }
                         amap[hash1]=1;
                         //amap.add(hash1+hash2)
                     }
                 }
             }
         }
-        console.log('files='+fCount, shouldSize+'=='+pairsList.length, 'matched='+pairsList.length===shouldSize)
+        console.log('files='+fCount, shouldSize+'=='+pairsList.length, 'matched='+pairsList.length*1===shouldSize*1)
         if(pairsList.length < 10000) fs.writeFileSync('./debuginfo/pairs.json', JSON.stringify(pairsList))
         return {
             pairs: pairsList,
@@ -92,6 +94,7 @@ const thisUtil = {
         let report = []
         let count = 0;
         console.log('pairs', pairs.length);
+        let timems = new Date();
         for(let i=0;i<pairs.length;i++){
             let path1 = pairs[i].a;
             let path2 = pairs[i].b;
@@ -116,7 +119,11 @@ const thisUtil = {
             let reddntLine = thisUtil.getRedundantLine(source1, source2);
             //console.log(reddntLine, path1+':'+path2)
             count++;
-            if(count % 23 === 0) console.log((count/pairs.length)*100+'%')
+            if(count % 23 === 0) {
+                let costms = new Date() - timems;
+                console.log('count='+count, 'ms='+costms, (count/pairs.length)*100+'%')
+                timems = new Date();
+            }
             report.push({
                 path1, path2,
                 reddntLine
