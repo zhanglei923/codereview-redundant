@@ -31,7 +31,7 @@ filterFuns.push((fpath)=>{
         return false;
     }else if(/\/oldcrm\//g.test(fpath)) {
         //console.log(2, fpath);
-        return false;
+        //return false;
     }else if(/\/i18n\//g.test(fpath)) {
         //console.log(2, fpath);
         return false;

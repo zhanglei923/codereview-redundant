@@ -56,7 +56,7 @@ const thisUtil = {
                 }
             }
         }
-        console.log('fCount='+fCount, 'total='+shouldSize, 'pairs=', (pairsList.length/shouldSize)*100+'%')
+        console.log('files='+fCount, 'pairs='+pairsList.length+'/'+shouldSize, ' complete=', (pairsList.length/shouldSize)*100+'%')
         if(pairsList.length < 10000) fs.writeFileSync('./debuginfo/pairs.json', JSON.stringify(pairsList))
         return {
             pairs: pairsList,
