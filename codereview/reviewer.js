@@ -49,14 +49,14 @@ const thisUtil = {
                             a: arr[0],
                             b: arr[1]
                         })
-                        if(count % 77777 === 0) console.log(count,shouldSize);
+                        if(count % 77777 === 0) console.log('pairs='+count+'/'+shouldSize, ' complete=', (count/shouldSize)*100+'%')
                         amap[hash1]=1;
                         //amap.add(hash1+hash2)
                     }
                 }
             }
         }
-        console.log('files='+fCount, 'pairs='+pairsList.length+'/'+shouldSize, ' complete=', (pairsList.length/shouldSize)*100+'%')
+        console.log('files='+fCount, shouldSize, 'matched='+pairsList.length===shouldSize)
         if(pairsList.length < 10000) fs.writeFileSync('./debuginfo/pairs.json', JSON.stringify(pairsList))
         return {
             pairs: pairsList,
