@@ -56,7 +56,7 @@ const thisUtil = {
                 }
             }
         }
-        console.log('fCount=', fCount, 'pairs=', pairsList.length+'='+shouldSize)
+        console.log('fCount='+fCount, 'total='+shouldSize, 'pairs=', (pairsList.length/shouldSize)*100+'%')
         if(pairsList.length < 10000) fs.writeFileSync('./debuginfo/pairs.json', JSON.stringify(pairsList))
         return {
             pairs: pairsList,
@@ -116,7 +116,7 @@ const thisUtil = {
             let reddntLine = thisUtil.getRedundantLine(source1, source2);
             //console.log(reddntLine, path1+':'+path2)
             count++;
-            if(count % 23 === 0) console.log(count,'/', pairs.length)
+            if(count % 23 === 0) console.log((count/pairs.length)*100+'%')
             report.push({
                 path1, path2,
                 reddntLine
