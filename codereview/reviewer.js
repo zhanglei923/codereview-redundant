@@ -57,7 +57,7 @@ const thisUtil = {
             }
         }
         console.log('fCount=', fCount, 'pairs=', pairsList.length+'='+shouldSize)
-        fs.writeFileSync('./debuginfo/pairs.json', JSON.stringify(pairsList))
+        if(pairsList.length < 10000) fs.writeFileSync('./debuginfo/pairs.json', JSON.stringify(pairsList))
         return {
             pairs: pairsList,
             sourceMap
@@ -88,7 +88,7 @@ const thisUtil = {
         return arr2.join(lineBrkString);
     },
     checkPairs: (pairs, srcmap) =>{
-        fs.writeFileSync('./debuginfo/srcmap.json', JSON.stringify(srcmap))
+        if(pairs.length < 10000) fs.writeFileSync('./debuginfo/srcmap.json', JSON.stringify(srcmap))
         let report = []
         let count = 0;
         console.log('pairs', pairs.length);
