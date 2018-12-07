@@ -52,7 +52,7 @@ filterFuns.push((fpath)=>{
         return false;
     }else if(/business\-widgets/g.test(fpath)) {
         //console.log(8, fpath);
-        return false;
+        //return false;
     }      
     //if(/Ctrl\.js$/g.test(fpath)) {console.log(1, fpath);
     return true;
@@ -60,7 +60,7 @@ filterFuns.push((fpath)=>{
 
 
 let t0 = new Date()
-let report = reviewer.check(codePath, [/.js$/], filterFuns)
+let report = reviewer.check(codePath, [/.js$/, /.tpl$/], filterFuns)
 console.log('cost', new Date() - t0)
 
 fs.writeFileSync('./debuginfo/report.json', JSON.stringify(report))
