@@ -56,11 +56,10 @@ const thisUtil = {
                 }
             }
         }
-        let pairs = pairsList;
-        console.log('fCount=', fCount, 'pairs=', pairs.length+'='+shouldSize)
-        fs.writeFileSync('./debuginfo/pairs.json', JSON.stringify(pairs))
+        console.log('fCount=', fCount, 'pairs=', pairsList.length+'='+shouldSize)
+        fs.writeFileSync('./debuginfo/pairs.json', JSON.stringify(pairsList))
         return {
-            pairs,
+            pairs: pairsList,
             sourceMap
         };
     },
