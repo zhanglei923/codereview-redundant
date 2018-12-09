@@ -67,14 +67,14 @@ const thisUtil = {
         let ismatch = (pairsList.length*1===shouldSize*1)
         console.log('files='+fpathCount, shouldSize+'=='+pairsList.length, ismatch?'matched':'not-match! stop-running!')
         if(!ismatch) throw new Exception('not-match! stop-running!');
-        if(pairsList.length < 10000) fs.writeFileSync('./debuginfo/pairs.json', JSON.stringify(pairsList))
+        if(pairsList.length < 10000) fs.writeFileSync('./.report/pairs.json', JSON.stringify(pairsList))
         return {
             pairs: pairsList,
             fpathMap
         };
     },
     checkPairs: (pairs, fpathmap) =>{
-        if(pairs.length < 10000) fs.writeFileSync('./debuginfo/fpathmap.json', JSON.stringify(fpathmap))
+        if(pairs.length < 10000) fs.writeFileSync('./.report/fpathmap.json', JSON.stringify(fpathmap))
         let report = []
         let count = 0;
         console.log('pairs', pairs.length);

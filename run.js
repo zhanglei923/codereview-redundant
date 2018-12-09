@@ -36,5 +36,5 @@ let report = reviewer.check(codePath, {
                                     });
 console.log('cost', new Date() - t0)
 
-fs.writeFileSync('./debuginfo/report.json', JSON.stringify(report))
+fs.writeFileSync('./.report/report.json', JSON.stringify(report))
 fs.writeFileSync(pathutil.resolve(reportPath, './report.json'), JSON.stringify(report))
