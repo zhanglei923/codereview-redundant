@@ -33,7 +33,7 @@ const thisUtil = {
             fpath = fpath.replace(/\/{1,}/, '/');
             //console.log(runFilters(fpath), fpath)
             if(runFilters(fpath)){
-                let fkey = fpathCount.toString(32)
+                let fkey = ''+fpathCount.toString(36)
                 fpathMap[fkey] = fpath;
                 fpathCount++;
             }
