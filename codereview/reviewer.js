@@ -48,7 +48,7 @@ const thisUtil = {
         for(let fkey1 in fpathMap){
             for(let fkey2 in fpathMap){
                 if(fkey1 !== fkey2){
-                    if(!amap[fkey1+fkey2] && !amap[fkey2+fkey1]) {
+                    if(!amap[fkey1+':'+fkey2] && !amap[fkey2+':'+fkey1]) {
                         count++;
                         let arr = [fkey1, fkey2];
                         arr.sort();
@@ -59,7 +59,7 @@ const thisUtil = {
                         if(count % 77777 === 0) {
                             console.log('pairs='+count+'/'+shouldSize, ' complete=', (count/shouldSize)*100+'%')
                         }
-                        amap[fkey1+fkey2]= 1;
+                        amap[fkey1+':'+fkey2]= 1;
                     }
                 }
             }
