@@ -3,9 +3,8 @@ var _ = require('lodash');
 var md5Util = require("blueimp-md5")//https://github.com/blueimp/JavaScript-MD5
 var pathutil = require('path');
 var jsdiff = require('diff');
-var decomment = require('decomment');
 let fileUtil = require('../util/fileUtil')
-
+let scriptUtil = require('../util/scriptUtil')
 let lineBrkReg = /(\r\n){1,}/g
 let lineBrkString = '\r\n';
 
@@ -85,8 +84,8 @@ const thisUtil = {
             let source1 = fs.readFileSync(path1,'utf8');//fpathmap[path1];
             let source2 = fs.readFileSync(path2,'utf8');//fpathmap[path2];
 
-            source1 = decomment(source1);
-            source2 = decomment(source2);
+            source1 = scriptUtil.decomment(source1);
+            source2 = scriptUtil.decomment(source2);
 
             source1 = source1.replace(lineBrkReg, lineBrkString);
             source2 = source2.replace(lineBrkReg, lineBrkString);
