@@ -39,6 +39,8 @@ const thisUtil = {
             }
         });
         let shouldSize = (fpathCount * (fpathCount-1))/2;
+        console.log(fpathCount,'=>', shouldSize)
+
         let pairsList = []
         let count=0
         //let amap = new Set()
@@ -62,7 +64,9 @@ const thisUtil = {
                 }
             }
         }
-        console.log('files='+fpathCount, shouldSize+'=='+pairsList.length, (pairsList.length*1===shouldSize*1)?'matched':'un-match!')
+        let ismatch = (pairsList.length*1===shouldSize*1)
+        console.log('files='+fpathCount, shouldSize+'=='+pairsList.length, ismatch?'matched':'not-match! stop-running!')
+        if(!ismatch) throw new Exception('not-match! stop-running!');
         if(pairsList.length < 10000) fs.writeFileSync('./debuginfo/pairs.json', JSON.stringify(pairsList))
         return {
             pairs: pairsList,

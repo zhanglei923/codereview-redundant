@@ -9,9 +9,9 @@ let filter_rkweb = require('./codereview/filters/filter-rk-web')
 //test:
 //> node main --src D:/workspaces/codereview-redundant-test/source/oa/js/approval
 //> node main.js --src E:/workspaceGerrit/_sub_branches/apps-ingage-web/src/main/webapp/static/source
-let dataPath = pathutil.resolve(__dirname,'../codereview-redundant-data/')
-if (!fs.existsSync(dataPath)){fs.mkdirSync(dataPath)}
-if (!fs.existsSync('./debuginfo')){fs.mkdirSync('./debuginfo')}
+let reportPath = pathutil.resolve(__dirname,'../codereview-redundant-report/')
+if (!fs.existsSync(reportPath)){fs.mkdirSync(reportPath)}
+if (!fs.existsSync('./.report')){fs.mkdirSync('./.report')}
 
 var cmdOptions = {
     string: 'src',
@@ -37,4 +37,4 @@ let report = reviewer.check(codePath, {
 console.log('cost', new Date() - t0)
 
 fs.writeFileSync('./debuginfo/report.json', JSON.stringify(report))
-fs.writeFileSync(pathutil.resolve(dataPath, './report.json'), JSON.stringify(report))
+fs.writeFileSync(pathutil.resolve(reportPath, './report.json'), JSON.stringify(report))
