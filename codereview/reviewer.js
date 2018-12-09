@@ -8,14 +8,16 @@ let fileUtil = require('../util/fileUtil')
 
 let lineBrkReg = /(\r\n){1,}/g
 let lineBrkString = '\r\n';
-let sourceMap = {};
+
+let fpathCount = 0;
+let fpathMap = {};
 
 const thisUtil = {
     check: (codePath, filters) =>{
         let info = thisUtil.loadFilesInfo(codePath, filters);
         let pairs = info.pairs;
-        let sourceMap = info.sourceMap;
-        return thisUtil.checkPairs(pairs, sourceMap);
+        let fpathMap = info.fpathMap;
+        return thisUtil.checkPairs(pairs, fpathMap);
     },
     loadFilesInfo: (codePath, filters)=>{
         if(typeof filters.functions === 'undefined') filters.functions = [()=>{return true;}]        
@@ -26,30 +28,27 @@ const thisUtil = {
             })
             return ok;
         };
-        let fCount = 0;
         fileUtil.eachContent(codePath, filters.regexs, (src, fpath)=>{
             fpath = fpath.replace(/\\{1,}/, '/');
             fpath = fpath.replace(/\/{1,}/, '/');
             //console.log(runFilters(fpath), fpath)
             if(runFilters(fpath)){
-                sourceMap[fpath] = true;
-                fCount++;
+                let fkey = fpathCount.toString(32)
+                fpathMap[fkey] = fpath;
+                fpathCount++;
             }
         });
-        let shouldSize = (fCount * (fCount-1))/2;
+        let shouldSize = (fpathCount * (fpathCount-1))/2;
         let pairsList = []
         let count=0
         //let amap = new Set()
         let amap = {};
-        for(let fpath1 in sourceMap){
-            for(let fpath2 in sourceMap){
-                if(fpath1 !== fpath2){
-                    let hash1 = md5Util(fpath2+fpath1)
-                    let hash2 = md5Util(fpath1+fpath2)
-                    if(!amap[hash1] && !amap[hash2]) {
-                    //if(fpath1 !== fpath2 && !amap.has(hash1+hash2) && !amap.has(hash2+hash1)) {
+        for(let fkey1 in fpathMap){
+            for(let fkey2 in fpathMap){
+                if(fkey1 !== fkey2){
+                    if(!amap[fkey1+fkey2] && !amap[fkey2+fkey1]) {
                         count++;
-                        let arr = [fpath1, fpath2];
+                        let arr = [fkey1, fkey2];
                         arr.sort();
                         pairsList.push({
                             a: arr[0],
@@ -58,56 +57,32 @@ const thisUtil = {
                         if(count % 77777 === 0) {
                             console.log('pairs='+count+'/'+shouldSize, ' complete=', (count/shouldSize)*100+'%')
                         }
-                        amap[hash1]=1;
-                        //amap.add(hash1+hash2)
+                        amap[fkey1+fkey2]= 1;
                     }
                 }
             }
         }
-        console.log('files='+fCount, shouldSize+'=='+pairsList.length, 'matched='+pairsList.length*1===shouldSize*1)
+        console.log('files='+fpathCount, shouldSize+'=='+pairsList.length, (pairsList.length*1===shouldSize*1)?'matched':'un-match!')
         if(pairsList.length < 10000) fs.writeFileSync('./debuginfo/pairs.json', JSON.stringify(pairsList))
         return {
             pairs: pairsList,
-            sourceMap
+            fpathMap
         };
     },
-    _asMd5Lines: (source) =>{
-        let arr = source.split(lineBrkReg)
-        let arr2 = [];
-        arr.forEach((line)=>{
-            arr2.push(md5Util(line));
-        })
-        return arr2.join(lineBrkString);
-    },
-    _asHalfLines: (source) =>{
-        //return source;
-        let arr = source.split(lineBrkReg)
-        let arr2 = [];
-        arr.forEach((line, i)=>{
-            //console.log(i, line, line===lineBrkString)
-            if(i%2===0 && line !== lineBrkString) arr2.push(line);
-        })
-        return arr2.join(lineBrkString);
-    },
-    checkPairs: (pairs, srcmap) =>{
-        if(pairs.length < 10000) fs.writeFileSync('./debuginfo/srcmap.json', JSON.stringify(srcmap))
+    checkPairs: (pairs, fpathmap) =>{
+        if(pairs.length < 10000) fs.writeFileSync('./debuginfo/fpathmap.json', JSON.stringify(fpathmap))
         let report = []
         let count = 0;
         console.log('pairs', pairs.length);
         let timems = new Date();
         for(let i=0;i<pairs.length;i++){
-            let path1 = pairs[i].a;
-            let path2 = pairs[i].b;
-            let source1 = fs.readFileSync(path1,'utf8');//srcmap[path1];
-            let source2 = fs.readFileSync(path2,'utf8');//srcmap[path2];
+            let path1 = fpathmap[pairs[i].a];
+            let path2 = fpathmap[pairs[i].b];
+            let source1 = fs.readFileSync(path1,'utf8');//fpathmap[path1];
+            let source2 = fs.readFileSync(path2,'utf8');//fpathmap[path2];
 
             source1 = decomment(source1);
             source2 = decomment(source2);
-
-            // source1 = thisUtil._asMd5Lines(source1);
-            // source2 = thisUtil._asMd5Lines(source2);
-            // source1 = thisUtil._asHalfLines(source1);
-            // source2 = thisUtil._asHalfLines(source2);
 
             source1 = source1.replace(lineBrkReg, lineBrkString);
             source2 = source2.replace(lineBrkReg, lineBrkString);
