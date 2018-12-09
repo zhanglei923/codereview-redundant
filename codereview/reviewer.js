@@ -85,8 +85,8 @@ const thisUtil = {
             let source1 = fs.readFileSync(path1,'utf8');//fpathmap[path1];
             let source2 = fs.readFileSync(path2,'utf8');//fpathmap[path2];
 
-            source1 = decomment(source1);
-            source2 = decomment(source2);
+            // source1 = decomment(source1);
+            // source2 = decomment(source2);
 
             source1 = source1.replace(lineBrkReg, lineBrkString);
             source2 = source2.replace(lineBrkReg, lineBrkString);
