@@ -11,17 +11,23 @@ let lineBrkString = '\r\n';
 let sourceMap = {};
 
 const thisUtil = {
-    loadFilesInfo: (codePath, filters, filterFuns)=>{
-        if(typeof filterFuns === 'undefined') filterFuns = [()=>{return true;}]        
+    check: (codePath, filters) =>{
+        let info = thisUtil.loadFilesInfo(codePath, filters);
+        let pairs = info.pairs;
+        let sourceMap = info.sourceMap;
+        return thisUtil.checkPairs(pairs, sourceMap);
+    },
+    loadFilesInfo: (codePath, filters)=>{
+        if(typeof filters.functions === 'undefined') filters.functions = [()=>{return true;}]        
         let runFilters = (fpath)=>{
             let ok = true;
-            filterFuns.forEach((filter)=>{
+            filters.functions.forEach((filter)=>{
                 if(filter(fpath)===false) ok = false;
             })
             return ok;
         };
         let fCount = 0;
-        fileUtil.eachContent(codePath, [/\.js$/], (src, fpath)=>{
+        fileUtil.eachContent(codePath, filters.regexs, (src, fpath)=>{
             fpath = fpath.replace(/\\{1,}/, '/');
             fpath = fpath.replace(/\/{1,}/, '/');
             //console.log(runFilters(fpath), fpath)
@@ -64,12 +70,6 @@ const thisUtil = {
             pairs: pairsList,
             sourceMap
         };
-    },
-    check: (codePath, filters, filterFuns) =>{
-        let info = thisUtil.loadFilesInfo(codePath, filters, filterFuns);
-        let pairs = info.pairs;
-        let sourceMap = info.sourceMap;
-        return thisUtil.checkPairs(pairs, sourceMap);
     },
     _asMd5Lines: (source) =>{
         let arr = source.split(lineBrkReg)
