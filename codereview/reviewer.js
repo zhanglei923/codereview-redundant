@@ -13,9 +13,10 @@ let fpathCount = 0;
 let fpathMap = {};
 
 const thisUtil = {
-    check: (codePath, filters) =>{
+    check: (codePath, filters, callback) =>{
         let info = thisUtil.getFilePathMap(codePath, filters);
-        return thisUtil.checkPairs(info);
+        thisUtil.generateMultiTasks(info);
+        thisUtil.runMultiTasks();
     },
     getFilePathMap: (codePath, filters)=>{
         if(typeof filters.functions === 'undefined') filters.functions = [()=>{return true;}]        
@@ -110,7 +111,7 @@ const thisUtil = {
             return false;
         }
     },
-    checkPairs: (info) =>{
+    generateMultiTasks: (info) =>{
         let fpathmap = info.fpathMap;
         fs.writeFileSync('./.reports/fpathmap1.json', JSON.stringify(fpathmap))
         let report = []
@@ -125,7 +126,7 @@ const thisUtil = {
                 let ok = thisUtil._can_compare(key1, key2, fpathmap);
                 if(ok) {
                     subTasks.push([key1, key2]);
-                    if(subTasks.length >= 20*1000){
+                    if(subTasks.length >= 20){
                         multiTaskUtil.saveSubTasks(subTasks);
                         subTasks = [];
                     }
@@ -142,12 +143,23 @@ const thisUtil = {
         console.log('!!! multiTaskUtil=', ok)
         if(!sizeMatched) throw new Exception('SIZE NOT MATCHED')
 
-
-
+    },
+    runMultiTasks: () =>{
+        let fmap = multiTaskUtil.loadFileMap();
+        //console.log(fmap)
+        let str =''
+        multiTaskUtil.eachTasksFile((tasks, taskname, fmap)=>{
+            thisUtil.runCompare(tasks, taskname, fmap);
+        })
+        console.log(str)
+    },
+    runCompare:(pairs, taskname, fpathmap)=>{
         let timems = new Date();
+        let report = []
         for(let i=0;i<pairs.length;i++){
-            let path1 = fpathmap[pairs[i].a];
-            let path2 = fpathmap[pairs[i].b];
+            let path1 = fpathmap[pairs[i].a].fpath;
+            let path2 = fpathmap[pairs[i].b].fpath;
+            //console.log(path1)
             let source1 = fs.readFileSync(path1,'utf8');//fpathmap[path1];
             let source2 = fs.readFileSync(path2,'utf8');//fpathmap[path2];
 
@@ -163,7 +175,7 @@ const thisUtil = {
             //console.log(source1, source2)
             let reddntLine = thisUtil.getRedundantLine(source1, source2);
             //console.log(reddntLine, path1+':'+path2)
-            count++;
+            let count = i;
             if(count % 23 === 0) {
                 let costms = new Date() - timems;
                 console.log('count='+count, 'ms='+costms, (count/pairs.length)*100+'%')
@@ -175,7 +187,7 @@ const thisUtil = {
             })
         }
         report = _.sortBy(report, 'reddntLine').reverse();
-        return report;
+        multiTaskUtil.saveReport(taskname, report);
     },
     getRedundantLine: (source1, source2) =>{
         let redundantLine = 0;

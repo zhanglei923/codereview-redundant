@@ -34,11 +34,12 @@ filterFuns.push(filter_rkweb)
 
 
 let t0 = new Date()
-let report = reviewer.check(codePath, {
-                                        regexs: [/.js$/, /.tpl$/],
-                                        functions: filterFuns
-                                    });
-console.log('cost', new Date() - t0)
+reviewer.check(codePath, {
+                            regexs: [/.js$/, /.tpl$/],
+                            functions: filterFuns
+                        }, ()=>{
+                            console.log('cost', new Date() - t0)
+                        });
 
-fs.writeFileSync('./.report/report.json', JSON.stringify(report))
-fs.writeFileSync(pathutil.resolve(reportsPath, './report.json'), JSON.stringify(report))
+// fs.writeFileSync('./.report/report.json', JSON.stringify(report))
+// fs.writeFileSync(pathutil.resolve(reportsPath, './report.json'), JSON.stringify(report))
