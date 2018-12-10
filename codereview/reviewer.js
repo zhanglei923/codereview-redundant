@@ -5,6 +5,7 @@ var pathutil = require('path');
 var jsdiff = require('diff');
 let fileUtil = require('../util/fileUtil')
 let scriptUtil = require('../util/scriptUtil')
+let multiTaskUtil = require('../util/multiTaskUtil')
 let lineBrkReg = /(\r\n){1,}/g
 let lineBrkString = '\r\n';
 
@@ -77,7 +78,7 @@ const thisUtil = {
             newmap[o.fkey] = o;
         })
         delete map;
-        fs.writeFileSync('./.report/arr.json', JSON.stringify(arr))
+        fs.writeFileSync('./.reports/_rearrange_by_linenum.json', JSON.stringify(arr))
         return newmap;
     },
     _can_compare: (key1, key2, fpathmap)=>{
@@ -98,20 +99,28 @@ const thisUtil = {
     },
     checkPairs: (info) =>{
         let fpathmap = info.fpathMap;
-        fs.writeFileSync('./.report/fpathmap1.json', JSON.stringify(fpathmap))
+        fs.writeFileSync('./.reports/fpathmap1.json', JSON.stringify(fpathmap))
         let report = []
         let count = 0;
         
+        multiTaskUtil.initTaskFolder()
+        let subTasks = []
         for(let key1 in fpathmap){
             let o1 = fpathmap[key1];
             for(let key2 in fpathmap){
                 let o2 = fpathmap[key2];
                 let ok = thisUtil._can_compare(key1, key2, fpathmap);
                 if(ok) {
+                    subTasks.push([key1, key2]);
+                    if(subTasks.length > 20*1000){
+                        multiTaskUtil.saveSubTasks(subTasks);
+                        subTasks = [];
+                    }
                     count++;
                 }
             }
         }
+        multiTaskUtil.saveSubTasks(subTasks);
         let sizeMatched = (count===info.shouldPairSize);
         console.log('!!!', count,'=', info.shouldPairSize, sizeMatched)
         if(!sizeMatched) throw new Exception('SIZE NOT MATCHED')
