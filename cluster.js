@@ -15,4 +15,7 @@ if (cluster.isMaster) {
   });
 } else {
   console.log(`Worker ${process.pid} started`);
+  setInterval(()=>{
+      console.log(process.pid+':'+Math.random())
+    }, 1000)
 }
