@@ -13,13 +13,13 @@ let fpathMap = {};
 
 const thisUtil = {
     check: (codePath, filters) =>{
-        let info = thisUtil.loadFilesInfo(codePath, filters);
-        let pairs = info.pairs;
-        let fpathMap = info.fpathMap;
-        return thisUtil.checkPairs(pairs, fpathMap);
+        let info = thisUtil.getFilePathMap(codePath, filters);
+        return thisUtil.checkPairs(info);
     },
-    loadFilesInfo: (codePath, filters)=>{
+    getFilePathMap: (codePath, filters)=>{
         if(typeof filters.functions === 'undefined') filters.functions = [()=>{return true;}]        
+        let fpathCount = 0;
+        let fpathMap = {};
         let runFilters = (fpath)=>{
             let ok = true;
             filters.functions.forEach((filter)=>{
@@ -33,50 +33,59 @@ const thisUtil = {
             //console.log(runFilters(fpath), fpath)
             if(runFilters(fpath)){
                 let fkey = ''+fpathCount.toString(36)
-                fpathMap[fkey] = fpath;
+                fpathMap[fkey] = {
+                    fpath,
+                    idx: fpathCount
+                };
                 fpathCount++;
             }
         });
-        let shouldSize = (fpathCount * (fpathCount-1))/2;
-        console.log(fpathCount,'=>', shouldSize)
-
-        let pairsList = []
-        let count=0
-        //let amap = new Set()
-        let amap = {};
-        for(let fkey1 in fpathMap){
-            for(let fkey2 in fpathMap){
-                if(fkey1 !== fkey2){
-                    if(!amap[fkey1+':'+fkey2] && !amap[fkey2+':'+fkey1]) {
-                        count++;
-                        let arr = [fkey1, fkey2];
-                        arr.sort();
-                        pairsList.push({
-                            a: arr[0],
-                            b: arr[1]
-                        });
-                        if(count % 77777 === 0) {
-                            console.log('pairs='+count+'/'+shouldSize, ' complete=', (count/shouldSize)*100+'%')
-                        }
-                        amap[fkey1+':'+fkey2]= 1;
-                    }
-                }
-            }
-        }
-        let ismatch = (pairsList.length*1===shouldSize*1)
-        console.log('files='+fpathCount, shouldSize+'=='+pairsList.length, ismatch?'matched':'not-match! stop-running!')
-        if(!ismatch) throw new Exception('not-match! stop-running!');
-        if(pairsList.length < 10000) fs.writeFileSync('./.report/pairs.json', JSON.stringify(pairsList))
+        let shouldPairSize = (fpathCount * (fpathCount-1))/2;
+        console.log(fpathCount,'=>', shouldPairSize)
         return {
-            pairs: pairsList,
+            fpathCount,
+            shouldPairSize,
             fpathMap
         };
     },
-    checkPairs: (pairs, fpathmap) =>{
-        if(pairs.length < 10000) fs.writeFileSync('./.report/fpathmap.json', JSON.stringify(fpathmap))
+    _can_compare: (key1, key2, fpathmap)=>{
+        //原理是判断i，j是否位于矩阵的右上半区（不含中线）：
+        //   1 2 3 4 5
+        // 1 x o o o o
+        // 2 - x o o o
+        // 3 - - x o o
+        // 4 - - - x o
+        // 5 - - - - x
+        let o1 = fpathmap[key1];
+        let o2 = fpathmap[key2];
+        if(o1.idx < o2.idx){
+            return true;
+        }else{
+            return false;
+        }
+    },
+    checkPairs: (info) =>{
+        let fpathmap = info.fpathMap;
+        fs.writeFileSync('./.report/fpathmap1.json', JSON.stringify(fpathmap))
         let report = []
         let count = 0;
-        console.log('pairs', pairs.length);
+        
+        for(let key1 in fpathmap){
+            let o1 = fpathmap[key1];
+            for(let key2 in fpathmap){
+                let o2 = fpathmap[key2];
+                let ok = thisUtil._can_compare(key1, key2, fpathmap);
+                if(ok) {
+                    count++;
+                }
+            }
+        }
+        let sizeMatched = (count===info.shouldPairSize);
+        console.log('!!!', count,'=', info.shouldPairSize, sizeMatched)
+        if(!sizeMatched) throw new Exception('SIZE NOT MATCHED')
+
+
+
         let timems = new Date();
         for(let i=0;i<pairs.length;i++){
             let path1 = fpathmap[pairs[i].a];
