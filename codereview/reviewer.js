@@ -183,7 +183,7 @@ const thisUtil = {
             let count = i;
             if(count % 23 === 0) {
                 let costms = new Date() - timems;
-                console.log('count='+count, 'ms='+costms, `multi-task, num${currentTaskIdx} of ${totalTaskCount}`, (count/pairs.length)*100+'%')
+                console.log('count='+count, 'ms='+costms, `multi-task: ${currentTaskIdx} of ${totalTaskCount}`, (count/pairs.length)*100+'%')
                 timems = new Date();
             }
             report.push({
