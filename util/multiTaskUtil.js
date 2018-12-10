@@ -45,6 +45,7 @@ let thisUtil = {
         let fmap = thisUtil.loadFileMap();
         let dir = thisUtil.taskFolder;
         var list = fs.readdirSync(dir)
+        let tasksList = []
         list.forEach(function(file) {
             file = dir + '/' + file
             var stat = fs.statSync(file)
@@ -64,8 +65,19 @@ let thisUtil = {
                     }
                     tasks.push(pair);
                 })
-                callback(tasks, taskname, fmap)
+                tasksList.push({
+                    tasks, 
+                    taskname
+                })
             }
+        });
+        tasksList.forEach((info, i)=>{            
+            callback(info.tasks, {
+                                    totalTaskCount: tasksList.length,
+                                    currentTaskIdx:i,
+                                    taskname:info.taskname, 
+                                    fmap
+                                });
         })
     },
     verify: (shouldPairSize)=>{

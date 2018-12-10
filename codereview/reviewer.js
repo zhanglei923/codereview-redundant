@@ -148,12 +148,17 @@ const thisUtil = {
         let fmap = multiTaskUtil.loadFileMap();
         //console.log(fmap)
         let str =''
-        multiTaskUtil.eachTasksFile((tasks, taskname, fmap)=>{
-            thisUtil.runCompare(tasks, taskname, fmap);
+        multiTaskUtil.eachTasksFile((tasks, info)=>{
+            thisUtil.runCompare(tasks, info);
         })
         console.log(str)
     },
-    runCompare:(pairs, taskname, fpathmap)=>{
+    runCompare:(pairs, info)=>{
+        let taskname = info.taskname;
+        let fpathmap = info.fmap;
+        let totalTaskCount = info.totalTaskCount;
+        let currentTaskIdx = info.currentTaskIdx;
+
         let timems = new Date();
         let report = []
         for(let i=0;i<pairs.length;i++){
@@ -178,7 +183,7 @@ const thisUtil = {
             let count = i;
             if(count % 23 === 0) {
                 let costms = new Date() - timems;
-                console.log('count='+count, 'ms='+costms, (count/pairs.length)*100+'%')
+                console.log('count='+count, 'ms='+costms, `multi-task, num${currentTaskIdx} of ${totalTaskCount}`, (count/pairs.length)*100+'%')
                 timems = new Date();
             }
             report.push({
