@@ -34,12 +34,15 @@ const thisUtil = {
             if(runFilters(fpath)){
                 let fkey = ''+fpathCount.toString(36)
                 fpathMap[fkey] = {
+                    fkey,
+                    lineNum: src.split('\n').length,
                     fpath,
                     idx: fpathCount
                 };
                 fpathCount++;
             }
         });
+        fpathMap = thisUtil._rearrange_by_linenum(fpathMap);//按照linenum均匀排布一下
         let shouldPairSize = (fpathCount * (fpathCount-1))/2;
         console.log(fpathCount,'=>', shouldPairSize)
         return {
@@ -47,6 +50,35 @@ const thisUtil = {
             shouldPairSize,
             fpathMap
         };
+    },
+    _rearrange_by_linenum: (map)=>{
+        let arr = [];
+        for(let key in map){
+            arr.push(map[key]);
+        }
+        let len1 = arr.length;
+        arr = _.sortBy(arr, [function(o) { return o.lineNum; }])
+        let arr2 = []
+        for(let i=0;i<arr.length;i++){
+            let lefti = i;
+            let righti = arr.length-1-i
+            if(lefti >= righti) break;
+            let o1 = arr[lefti]
+            let o2 = arr[righti]
+            if(o1)arr2.push(o1)
+            if(o2)arr2.push(o2)
+        }
+        let len2 = arr2.length;
+        console.log('len2=len1', len2, len1, len2===len1)
+        arr = arr2;
+        let newmap = {};
+        arr.forEach((o, i)=>{
+            o.idx = i;
+            newmap[o.fkey] = o;
+        })
+        delete map;
+        fs.writeFileSync('./.report/arr.json', JSON.stringify(arr))
+        return newmap;
     },
     _can_compare: (key1, key2, fpathmap)=>{
         //原理是判断i，j是否位于矩阵的右上半区（不含中线）：
