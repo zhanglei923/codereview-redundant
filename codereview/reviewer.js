@@ -112,7 +112,7 @@ const thisUtil = {
                 let ok = thisUtil._can_compare(key1, key2, fpathmap);
                 if(ok) {
                     subTasks.push([key1, key2]);
-                    if(subTasks.length > 20*1000){
+                    if(subTasks.length >= 20*1000){
                         multiTaskUtil.saveSubTasks(subTasks);
                         subTasks = [];
                     }
@@ -121,8 +121,12 @@ const thisUtil = {
             }
         }
         multiTaskUtil.saveSubTasks(subTasks);
+        multiTaskUtil.savePathMap(fpathmap);
+        let ok = multiTaskUtil.verify(info.shouldPairSize);
+
         let sizeMatched = (count===info.shouldPairSize);
         console.log('!!!', count,'=', info.shouldPairSize, sizeMatched)
+        console.log('!!! multiTaskUtil=', ok)
         if(!sizeMatched) throw new Exception('SIZE NOT MATCHED')
 
 
