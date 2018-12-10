@@ -145,13 +145,17 @@ const thisUtil = {
 
     },
     runMultiTasks: () =>{
-        let fmap = multiTaskUtil.loadFileMap();
-        //console.log(fmap)
-        let str =''
-        multiTaskUtil.eachTasksFile((tasks, info)=>{
-            thisUtil.runCompare(tasks, info);
-        })
-        console.log(str)
+        multiTaskUtil.beforePopTask();//get ready
+        for(let i=0;i<Math.pow(10, 9);i++){
+            let o = multiTaskUtil.popTask()
+            if(o){
+                console.log('run', o.info.taskname)
+                thisUtil.runCompare(o.task, o.info);
+            }else{
+                console.log('finished!')
+                break;
+            }
+        }
     },
     runCompare:(pairs, info)=>{
         let taskname = info.taskname;

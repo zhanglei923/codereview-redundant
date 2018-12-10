@@ -38,8 +38,24 @@ let thisUtil = {
         return fmap;
     },
     saveReport:(taskname, report)=>{
+        console.log('save', taskname)
         let filepath = pathutil.resolve(thisUtil.reportFolder, `./${taskname}`);
         fs.writeFileSync(filepath, JSON.stringify(report))
+    },
+    currentTaskStack: [],
+    beforePopTask: ()=>{
+        thisUtil.currentTaskStack = [];
+        thisUtil.eachTasksFile((task, info)=>{
+            thisUtil.currentTaskStack.push({
+                task,
+                info
+            })
+        });
+        console.log(thisUtil.currentTaskStack.length)
+    },
+    popTask: ()=>{
+        let o = thisUtil.currentTaskStack.shift();
+        return o;
     },
     eachTasksFile: (callback)=>{
         let fmap = thisUtil.loadFileMap();
