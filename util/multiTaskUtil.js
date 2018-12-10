@@ -2,6 +2,7 @@ var fs = require('fs');
 var pathutil = require('path');
 
 let thisUtil = {
+    CLUSTER_SIZE: 2000,
     taskCount: 0,
     taskFolder: null,
     taskId: (''+Math.random()).replace(/\./g, ''),

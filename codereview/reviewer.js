@@ -126,7 +126,7 @@ const thisUtil = {
                 let ok = thisUtil._can_compare(key1, key2, fpathmap);
                 if(ok) {
                     subTasks.push([key1, key2]);
-                    if(subTasks.length >= 20){
+                    if(subTasks.length >= multiTaskUtil.CLUSTER_SIZE){
                         multiTaskUtil.saveSubTasks(subTasks);
                         subTasks = [];
                     }
