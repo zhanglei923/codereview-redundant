@@ -98,10 +98,10 @@ const thisUtil = {
         //原理是判断i，j是否位于矩阵的右上半区（不含中线）：
         //   1 2 3 4 5
         // 1 x o o o o
-        // 2 - x o o o
-        // 3 - - x o o
-        // 4 - - - x o
-        // 5 - - - - x
+        // 2 x x o o o
+        // 3 x x x o o
+        // 4 x x x x o
+        // 5 x x x x x
         let o1 = fpathmap[key1];
         let o2 = fpathmap[key2];
         if(o1.idx < o2.idx){
