@@ -34,6 +34,7 @@ const thisUtil = {
             //console.log(runFilters(fpath), fpath)
             if(runFilters(fpath)){
                 let fkey = ''+fpathCount.toString(36)
+                //console.log('>>', fpathCount, fkey)
                 fpathMap[fkey] = {
                     fkey,
                     lineNum: src.split('\n').length,
@@ -43,7 +44,7 @@ const thisUtil = {
                 fpathCount++;
             }
         });
-        fpathMap = thisUtil._rearrange_by_linenum(fpathMap);//按照linenum均匀排布一下
+        fpathMap = thisUtil._rebalence_linenum(fpathMap);//按照linenum均匀排布一下，让计算时间更平均
         let shouldPairSize = (fpathCount * (fpathCount-1))/2;
         console.log(fpathCount,'=>', shouldPairSize)
         return {
@@ -52,33 +53,45 @@ const thisUtil = {
             fpathMap
         };
     },
-    _rearrange_by_linenum: (map)=>{
+    _rebalence_linenum: (map)=>{
         let arr = [];
         for(let key in map){
             arr.push(map[key]);
         }
-        let len1 = arr.length;
         arr = _.sortBy(arr, [function(o) { return o.lineNum; }])
-        let arr2 = []
+        // let s=''
+        // arr.forEach((o)=>{
+        //     s+=(','+o.lineNum)
+        // })
+        // console.log(s)
+        let len = arr.length;
+        let half1 = Math.floor(len/2);
+        let half2 = len - half1;
+        let halfArr1 = [];
+        let halfArr2 = [];
         for(let i=0;i<arr.length;i++){
-            let lefti = i;
-            let righti = arr.length-1-i
-            if(lefti >= righti) break;
-            let o1 = arr[lefti]
-            let o2 = arr[righti]
-            if(o1)arr2.push(o1)
-            if(o2)arr2.push(o2)
+            if(i<=half1) {
+                halfArr1.push(arr[i])
+            }else{
+                halfArr2.push(arr[i])
+            }
         }
-        let len2 = arr2.length;
-        console.log('len2=len1', len2, len1, len2===len1)
-        arr = arr2;
+        halfArr2.reverse();
+        let resultArr = []
+        for(let i=0;i<len*2;i++){
+            let o1;
+            let o2;
+            o1 = halfArr1.shift();if(o1)resultArr.push(o1);
+            o2 = halfArr2.shift();if(o2)resultArr.push(o2);
+            if(!o1 && !o2)break;
+        }
         let newmap = {};
-        arr.forEach((o, i)=>{
+        resultArr.forEach((o, i)=>{
             o.idx = i;
             newmap[o.fkey] = o;
         })
         delete map;
-        fs.writeFileSync('./.reports/_rearrange_by_linenum.json', JSON.stringify(arr))
+        fs.writeFileSync('./.reports/_rebalence_linenum.json', JSON.stringify(resultArr))
         return newmap;
     },
     _can_compare: (key1, key2, fpathmap)=>{
