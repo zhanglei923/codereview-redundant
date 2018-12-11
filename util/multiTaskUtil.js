@@ -64,12 +64,14 @@ let thisUtil = {
     beforePopTask: ()=>{
         thisUtil.currentTaskStack = [];
         thisUtil.eachTasksFile((taskinfo)=>{
-            thisUtil.currentTaskStack.push(taskinfo)
+            thisUtil.currentTaskStack.push(taskinfo.taskname);
         });
         console.log(thisUtil.currentTaskStack.length)
     },
     popTask: ()=>{
-        let o = thisUtil.currentTaskStack.shift();
+        let taskname = thisUtil.currentTaskStack.shift();
+        if(!taskname) return null;
+        let o = thisUtil.loadTask(taskname);
         return o;
     },
     eachTasksFile: (callback)=>{
