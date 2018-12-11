@@ -159,8 +159,8 @@ const thisUtil = {
     },
     runCompare:(pairs, info)=>{
         let taskname = info.taskname;
-        let fpathmap = info.fmap;
-        let totalTaskCount = info.totalTaskCount;
+        let fpathmap = multiTaskUtil.fmap;
+        let totalTaskCount = multiTaskUtil.totalTaskCount;
 
         let timems = new Date();
         let report = []

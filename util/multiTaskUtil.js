@@ -23,12 +23,12 @@ let thisUtil = {
         let filepath = pathutil.resolve(thisUtil.taskFolder, `./fmap`);
         fs.writeFileSync(filepath, JSON.stringify(fmap))
     },
-    saveSubTasks: (tasks)=> {
-        let filepath = pathutil.resolve(thisUtil.taskFolder, `./tasks${thisUtil.taskCount}`);
+    saveSubTasks: (task)=> {
+        let filepath = pathutil.resolve(thisUtil.taskFolder, `./task${thisUtil.taskCount}`);
         thisUtil.taskCount++;
         let savestr = []
-        tasks.forEach((task)=>{
-            savestr.push(task[0]+':'+task[1]);
+        task.forEach((t)=>{
+            savestr.push(t[0]+':'+t[1]);
         })
         fs.writeFileSync(filepath, savestr.join(','))
     },
@@ -88,28 +88,15 @@ let thisUtil = {
                 let filename = pathinfo.name;
                 let taskname = filename;
                 //console.log(filename)
-                let txt = fs.readFileSync(file, 'utf8');
-                txt = txt.replace(/\,$/,'')
-                let arr = txt.split(',');
-                let tasks = []
-                arr.forEach((o)=>{
-                    let pair = {
-                        a: o.split(':')[0],
-                        b: o.split(':')[1]
-                    }
-                    tasks.push(pair);
-                })
-                tasksList.push({
-                    tasks, 
-                    taskname
-                })
+                let taskinfo = thisUtil.loadTask(taskname);
+                tasksList.push(taskinfo)
             }
         });
+        thisUtil.totalTaskCount = tasksList.length;
+        thisUtil.fmap = fmap;
         tasksList.forEach((info, i)=>{            
-            callback(info.tasks, {
-                                    totalTaskCount: tasksList.length,
-                                    taskname:info.taskname, 
-                                    fmap
+            callback(info.task, {
+                                    taskname:info.taskname
                                 });
         })
     },
