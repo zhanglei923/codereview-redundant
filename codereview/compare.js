@@ -28,8 +28,10 @@ const thisUtil = {
         let timems = new Date();
         let report = []
         for(let i=0;i<pairs.length;i++){
-            let path1 = fpathmap[pairs[i].a].fpath;
-            let path2 = fpathmap[pairs[i].b].fpath;
+            let key1 = pairs[i].a;
+            let key2 = pairs[i].b;
+            let path1 = fpathmap[key1].fpath;
+            let path2 = fpathmap[key2].fpath;
             //console.log(path1)
             let source1 = fs.readFileSync(path1,'utf8');//fpathmap[path1];
             let source2 = fs.readFileSync(path2,'utf8');//fpathmap[path2];
@@ -47,17 +49,18 @@ const thisUtil = {
             let reddntLine = thisUtil.getRedundantLine(source1, source2);
             //console.log(reddntLine, path1+':'+path2)
             let count = i;
-            if(count % 177 === 0) {
+            if(count % 277 === 0) {
                 let costms = new Date() - timems;
-                console.log('count='+count, 'ms='+costms, `tasks=${currentTaskNum}/${totalTaskNum},w=#${workerId}`, (count/pairs.length)*100+'%')
+                console.log('count='+count, 'ms='+costms, `tasks=${currentTaskNum}/${totalTaskNum},#${workerId}`, (count/pairs.length)*100+'%')
                 timems = new Date();
             }
             report.push({
-                path1, path2,
-                reddntLine
+                a:key1, 
+                b:key2,
+                l:reddntLine
             })
         }
-        report = _.sortBy(report, 'reddntLine').reverse();
+        report = _.sortBy(report, 'l').reverse();
         multiTaskUtil.saveReport(taskname, report);
     },
     getRedundantLine: (source1, source2) =>{
