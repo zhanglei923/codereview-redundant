@@ -184,7 +184,7 @@ const thisUtil = {
             let reddntLine = thisUtil.getRedundantLine(source1, source2);
             //console.log(reddntLine, path1+':'+path2)
             let count = i;
-            if(count % 23 === 0) {
+            if(count % 177 === 0) {
                 let costms = new Date() - timems;
                 console.log('count='+count, 'ms='+costms, `multi-task: ${totalTaskCount}`, (count/pairs.length)*100+'%')
                 timems = new Date();
