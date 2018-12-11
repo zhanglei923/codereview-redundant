@@ -12,7 +12,7 @@ let lineBrkString = '\r\n';
 let fpathCount = 0;
 let fpathMap = {};
 
-let runner = require('./runner')
+let compare = require('./compare')
 
 const thisUtil = {
     run: () =>{
@@ -23,7 +23,7 @@ const thisUtil = {
         for(let i=0;i<Math.pow(10, 9);i++){
             let taskinfo = multiTaskUtil.popTask()
             if(taskinfo){
-                runner.runCompare(taskinfo);
+                compare.runCompare(taskinfo);
             }else{
                 console.log('finished!')
                 break;
