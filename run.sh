@@ -1,1 +1,1 @@
-node --max-old-space-size=12288  run --src D:/workspaces/codereview-redundant-mock/source
+node --max-old-space-size=12288  task_gen --src D:/workspaces/codereview-redundant-mock/source
