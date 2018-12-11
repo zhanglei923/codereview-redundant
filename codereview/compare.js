@@ -13,11 +13,15 @@ let fpathCount = 0;
 let fpathMap = {};
 
 const thisUtil = {
-    runCompare:(taskinfo)=>{
+    runCompare:(taskinfo, displayInfo)=>{
         var pairs = taskinfo.task;
         let taskname = taskinfo.taskname;
         let fpathmap = multiTaskUtil.fmap;
-        let totalTaskCount = multiTaskUtil.totalTaskCount;
+
+
+        let currentTaskNum = displayInfo.currentTaskNum
+        let totalTaskNum = displayInfo.totalTaskNum
+        let workerId = displayInfo.workerId
 
         console.log('run', taskname)
 
@@ -45,7 +49,7 @@ const thisUtil = {
             let count = i;
             if(count % 177 === 0) {
                 let costms = new Date() - timems;
-                console.log('count='+count, 'ms='+costms, `multi-task: ${totalTaskCount}`, (count/pairs.length)*100+'%')
+                console.log('count='+count, 'ms='+costms, `tasks=${currentTaskNum}/${totalTaskNum},w=#${workerId}`, (count/pairs.length)*100+'%')
                 timems = new Date();
             }
             report.push({

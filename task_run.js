@@ -24,6 +24,7 @@ if (cluster.isMaster) {
   let tasks = multiTaskUtil.beforePopTask();//get ready
   console.log( 'tasks=', tasks);
   taskStack = tasks;
+  let totalTaskNum = taskStack.length; 
 
   for (let i = 0; i < numCPUs; i++) {
     let worker = cluster.fork();
@@ -31,8 +32,13 @@ if (cluster.isMaster) {
       //console.log(`(master).${process.pid} got: '${JSON.stringify(message)}' from w.${worker.process.pid}`);
       if(message === MSG_REQUEST_TASKID){
         if(taskStack.length > 0){
+          let currentTaskNum = taskStack.length;          
           let taskid = taskStack.shift();
-          worker.send({taskid})
+          worker.send({
+            taskid,
+            currentTaskNum,
+            totalTaskNum
+          })
         }else{
           worker.kill()
         }
@@ -45,17 +51,24 @@ if (cluster.isMaster) {
   console.log(`w.${process.pid} started`);
   process.on('message', function(message) {});
   worker.on('message', function(message) {
-    if(message.taskid){
-      console.log('multiTaskUtil', multiTaskUtil.ctxPath)
-        console.log(`w.${process.pid} recevies '${message.taskid}'`);
-        let taskinfo = multiTaskUtil.loadTask(message.taskid)
-        if(taskinfo){
-            compare.runCompare(taskinfo);
-        }else{
-            console.log('Can not find:', message.taskid)
-        }
-    }
+      if(message.taskid){
+          //console.log('multiTaskUtil', multiTaskUtil.ctxPath)
+          //console.log(`w.${process.pid} recevies '${message.taskid}'`);
+          console.log('run-task', `${message.currentTaskNum}/${message.totalTaskNum}`, `worker=${process.pid}`)
+          let taskinfo = multiTaskUtil.loadTask(message.taskid)
+          if(taskinfo){
+              let displayInfo = {
+                currentTaskNum: message.currentTaskNum,
+                totalTaskNum: message.totalTaskNum,
+                workerId: process.pid
+              }
+              compare.runCompare(taskinfo, displayInfo);
+              worker.send(MSG_REQUEST_TASKID);//向master线程发消息，申请任务
+          }else{
+              console.log('Can not find:', message.taskid)
+          }
+      }
   });
-  worker.send(MSG_REQUEST_TASKID);
+  worker.send(MSG_REQUEST_TASKID);//向master线程发消息，申请任务
 
 }
