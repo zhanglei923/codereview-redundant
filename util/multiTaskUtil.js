@@ -28,6 +28,8 @@ let thisUtil = {
     savePathMap: (fmap)=>{
         let filepath = pathutil.resolve(thisUtil.taskFolder, `./fmap`);
         fs.writeFileSync(filepath, JSON.stringify(fmap))
+        filepath = pathutil.resolve(thisUtil.reportFolder, `./fmap`);
+        fs.writeFileSync(filepath, JSON.stringify(fmap))
     },
     saveSubTasks: (task)=> {
         let filepath = pathutil.resolve(thisUtil.taskFolder, `./task${thisUtil.taskCount}`);
