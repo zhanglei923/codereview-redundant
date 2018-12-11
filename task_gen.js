@@ -35,7 +35,7 @@ filterFuns.push(filter_rkweb)
 
 
 let t0 = new Date()
-generateTasks.check(codePath, {
+generateTasks.generate(codePath, {
                             regexs: [/.js$/, /.tpl$/],
                             functions: filterFuns
                         });

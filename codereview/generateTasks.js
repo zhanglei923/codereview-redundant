@@ -13,7 +13,7 @@ let fpathCount = 0;
 let fpathMap = {};
 
 const thisUtil = {
-    check: (codePath, filters, callback) =>{
+    generate: (codePath, filters, callback) =>{
         let info = thisUtil.getFilePathMap(codePath, filters);
         thisUtil.generateMultiTasks(info);
     },
