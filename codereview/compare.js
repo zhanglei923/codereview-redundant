@@ -52,7 +52,7 @@ const thisUtil = {
             let count = i;
             if(count % 477 === 0) {
                 let costms = new Date() - timems;
-                console.log(`[${displayUtil.percentage(currentTaskNum, totalTaskNum)}%]#${workerId}:thread=${currentTaskNum}/${totalTaskNum}`, 
+                console.log(`[${displayUtil.percentage(currentTaskNum, totalTaskNum)}%]#${workerId}:tasks=${currentTaskNum}/${totalTaskNum}`, 
                             'ms='+costms, 
                             '('+displayUtil.percentage(count, pairs.length)+'%)'
                             )
