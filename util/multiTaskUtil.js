@@ -8,17 +8,17 @@ let thisUtil = {
     taskFolder: null,
     taskId: (moment().format('YYYYMMDD_hhmmss'))+'-'+(Math.random()+'').replace(/\./g, '').substring(6),
     reportFolder: null,
-    init: (ctxPath)=>{
+    init: (ctxPath, taskId)=>{
         thisUtil.taskCount = 0;
         thisUtil.ctxPath = ctxPath;
         //console.log('ctxpath1', ctxPath)
+        if(typeof taskId !== 'undefined') thisUtil.taskId = taskId;
     },
     initTaskFolder: ()=>{
-        //console.log('ctxpath2', thisUtil.ctxPath)
         thisUtil.taskFolder = pathutil.resolve(thisUtil.ctxPath, './tasks_'+thisUtil.taskId)
         thisUtil.reportFolder = pathutil.resolve(thisUtil.ctxPath, './tasks_'+thisUtil.taskId+'_report')
-        fs.mkdirSync(thisUtil.taskFolder);
-        fs.mkdirSync(thisUtil.reportFolder);
+        if (!fs.existsSync(thisUtil.taskFolder))fs.mkdirSync(thisUtil.taskFolder);
+        if (!fs.existsSync(thisUtil.reportFolder))fs.mkdirSync(thisUtil.reportFolder);
         return {
             taskFolder: thisUtil.taskFolder,
             reportFolder: thisUtil.reportFolder,
@@ -41,10 +41,12 @@ let thisUtil = {
     loadFileMap:()=>{
         let fmap = fs.readFileSync(pathutil.resolve(thisUtil.taskFolder, `./fmap`),'utf8')
         fmap = JSON.parse(fmap);
+        thisUtil.fmap = fmap;
         return fmap;
     },
     loadTask:(taskname)=>{
         //console.log('load:', taskname)
+        console.log('x', thisUtil.taskFolder, taskname)
         let txt = fs.readFileSync(pathutil.resolve(thisUtil.taskFolder, `./${taskname}`),'utf8')
         txt = txt.replace(/\,$/,'')
         let arr = txt.split(',');
@@ -66,20 +68,20 @@ let thisUtil = {
         let filepath = pathutil.resolve(thisUtil.reportFolder, `./${taskname}`);
         fs.writeFileSync(filepath, JSON.stringify(report))
     },
-    currentTaskStack: [],
     beforePopTask: ()=>{
-        thisUtil.currentTaskStack = [];
+        let currentTaskStack = [];
         thisUtil.eachTasksFile((taskinfo)=>{
-            thisUtil.currentTaskStack.push(taskinfo.taskname);
+            currentTaskStack.push(taskinfo.taskname);
         });
-        //console.log(thisUtil.currentTaskStack.length)
+        return currentTaskStack;
+        //console.log(currentTaskStack.length)
     },
-    popTask: ()=>{
-        let taskname = thisUtil.currentTaskStack.shift();
-        if(!taskname) return null;
-        let o = thisUtil.loadTask(taskname);
-        return o;
-    },
+    // popTask: ()=>{
+    //     let taskname = thisUtil.currentTaskStack.shift();
+    //     if(!taskname) return null;
+    //     let o = thisUtil.loadTask(taskname);
+    //     return o;
+    // },
     eachTasksFile: (callback)=>{
         let fmap = thisUtil.loadFileMap();
         let dir = thisUtil.taskFolder;

@@ -15,7 +15,8 @@ let fpathMap = {};
 const thisUtil = {
     generate: (codePath, filters, callback) =>{
         let info = thisUtil.getFilePathMap(codePath, filters);
-        thisUtil.generateMultiTasks(info);
+        let taskId = thisUtil.generateMultiTasks(info);
+        return taskId;
     },
     getFilePathMap: (codePath, filters)=>{
         if(typeof filters.functions === 'undefined') filters.functions = [()=>{return true;}]        
@@ -138,10 +139,10 @@ const thisUtil = {
         let ok = multiTaskUtil.verify(info.shouldPairSize);
 
         let sizeMatched = (count===info.shouldPairSize);
-        console.log('-Task generated:', 'taskname='+taskFolderInfo.taskId,count,'=', info.shouldPairSize, sizeMatched, 'multiTaskUtil=', ok)
+        console.log('-Task generated:', 'taskId='+taskFolderInfo.taskId,count,'=', info.shouldPairSize, sizeMatched, 'multiTaskUtil=', ok)
         if(!ok) throw ('VERIFY FAILED')
         if(!sizeMatched) throw ('SIZE NOT MATCHED')
-
+        return taskFolderInfo.taskId;
     }
 }
 module.exports = thisUtil;
