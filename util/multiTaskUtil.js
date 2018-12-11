@@ -19,6 +19,11 @@ let thisUtil = {
         thisUtil.reportFolder = pathutil.resolve(thisUtil.ctxPath, './tasks_'+thisUtil.taskId+'_report')
         fs.mkdirSync(thisUtil.taskFolder);
         fs.mkdirSync(thisUtil.reportFolder);
+        return {
+            taskFolder: thisUtil.taskFolder,
+            reportFolder: thisUtil.reportFolder,
+            taskId: thisUtil.taskId
+        }
     },
     savePathMap: (fmap)=>{
         let filepath = pathutil.resolve(thisUtil.taskFolder, `./fmap`);
@@ -39,7 +44,7 @@ let thisUtil = {
         return fmap;
     },
     loadTask:(taskname)=>{
-        console.log('load:', taskname)
+        //console.log('load:', taskname)
         let txt = fs.readFileSync(pathutil.resolve(thisUtil.taskFolder, `./${taskname}`),'utf8')
         txt = txt.replace(/\,$/,'')
         let arr = txt.split(',');
@@ -67,7 +72,7 @@ let thisUtil = {
         thisUtil.eachTasksFile((taskinfo)=>{
             thisUtil.currentTaskStack.push(taskinfo.taskname);
         });
-        console.log(thisUtil.currentTaskStack.length)
+        //console.log(thisUtil.currentTaskStack.length)
     },
     popTask: ()=>{
         let taskname = thisUtil.currentTaskStack.shift();
