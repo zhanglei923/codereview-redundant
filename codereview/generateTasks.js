@@ -116,7 +116,7 @@ const thisUtil = {
         let report = []
         let count = 0;
         
-        multiTaskUtil.initTaskFolder()
+        let taskFolderInfo = multiTaskUtil.initTaskFolder()
         let subTasks = []
         for(let key1 in fpathmap){
             let o1 = fpathmap[key1];
@@ -138,9 +138,9 @@ const thisUtil = {
         let ok = multiTaskUtil.verify(info.shouldPairSize);
 
         let sizeMatched = (count===info.shouldPairSize);
-        console.log('!!!', count,'=', info.shouldPairSize, sizeMatched)
-        console.log('!!! multiTaskUtil=', ok)
-        if(!sizeMatched) throw new Exception('SIZE NOT MATCHED')
+        console.log('-Task generated:', 'taskname='+taskFolderInfo.taskId,count,'=', info.shouldPairSize, sizeMatched, 'multiTaskUtil=', ok)
+        if(!ok) throw ('VERIFY FAILED')
+        if(!sizeMatched) throw ('SIZE NOT MATCHED')
 
     }
 }

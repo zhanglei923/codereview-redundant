@@ -11,10 +11,10 @@ let thisUtil = {
     init: (ctxPath)=>{
         thisUtil.taskCount = 0;
         thisUtil.ctxPath = ctxPath;
-        console.log('ctxpath1', ctxPath)
+        //console.log('ctxpath1', ctxPath)
     },
     initTaskFolder: ()=>{
-        console.log('ctxpath2', thisUtil.ctxPath)
+        //console.log('ctxpath2', thisUtil.ctxPath)
         thisUtil.taskFolder = pathutil.resolve(thisUtil.ctxPath, './tasks_'+thisUtil.taskId)
         thisUtil.reportFolder = pathutil.resolve(thisUtil.ctxPath, './tasks_'+thisUtil.taskId+'_report')
         fs.mkdirSync(thisUtil.taskFolder);
@@ -108,9 +108,12 @@ let thisUtil = {
     },
     verify: (shouldPairSize)=>{
         var count = 0;
-        thisUtil.eachTasksFile((taskArr)=>{            
-            count+=taskArr.length;
+        thisUtil.eachTasksFile((info)=>{            
+            count+=info.task.length;
         })
+        if(count !== shouldPairSize){
+            console.log('verify failed, '+count+ '!='+ shouldPairSize)
+        }
         return count === shouldPairSize;
     }
 }
