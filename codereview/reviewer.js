@@ -147,20 +147,22 @@ const thisUtil = {
     runMultiTasks: () =>{
         multiTaskUtil.beforePopTask();//get ready
         for(let i=0;i<Math.pow(10, 9);i++){
-            let o = multiTaskUtil.popTask()
-            if(o){
-                console.log('run', o.info.taskname)
-                thisUtil.runCompare(o.task, o.info);
+            let taskinfo = multiTaskUtil.popTask()
+            if(taskinfo){
+                thisUtil.runCompare(taskinfo);
             }else{
                 console.log('finished!')
                 break;
             }
         }
     },
-    runCompare:(pairs, info)=>{
-        let taskname = info.taskname;
+    runCompare:(taskinfo)=>{
+        var pairs = taskinfo.task;
+        let taskname = taskinfo.taskname;
         let fpathmap = multiTaskUtil.fmap;
         let totalTaskCount = multiTaskUtil.totalTaskCount;
+
+        console.log('run', taskname)
 
         let timems = new Date();
         let report = []

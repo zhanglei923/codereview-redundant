@@ -63,11 +63,8 @@ let thisUtil = {
     currentTaskStack: [],
     beforePopTask: ()=>{
         thisUtil.currentTaskStack = [];
-        thisUtil.eachTasksFile((task, info)=>{
-            thisUtil.currentTaskStack.push({
-                task,
-                info
-            })
+        thisUtil.eachTasksFile((taskinfo)=>{
+            thisUtil.currentTaskStack.push(taskinfo)
         });
         console.log(thisUtil.currentTaskStack.length)
     },
@@ -95,9 +92,10 @@ let thisUtil = {
         thisUtil.totalTaskCount = tasksList.length;
         thisUtil.fmap = fmap;
         tasksList.forEach((info, i)=>{            
-            callback(info.task, {
-                                    taskname:info.taskname
-                                });
+            callback({ 
+                        task: info.task, 
+                        taskname:info.taskname
+                    });
         })
     },
     verify: (shouldPairSize)=>{
