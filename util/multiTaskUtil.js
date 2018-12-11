@@ -67,7 +67,12 @@ let thisUtil = {
     saveReport:(taskname, report)=>{
         console.log('save', taskname)
         let filepath = pathutil.resolve(thisUtil.reportFolder, `./${taskname}`);
-        fs.writeFileSync(filepath, JSON.stringify(report))
+        let arr = [];
+        report.forEach((o)=>{
+            arr.push(`${o.a}:${o.b}=${o.l}`)
+        })
+        let str = arr.join(',');
+        fs.writeFileSync(filepath, str)
     },
     beforePopTask: ()=>{
         let currentTaskStack = [];
