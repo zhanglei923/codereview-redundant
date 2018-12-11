@@ -33,9 +33,27 @@ let thisUtil = {
         fs.writeFileSync(filepath, savestr.join(','))
     },
     loadFileMap:()=>{
-        let fmap = fs.readFileSync(pathutil.resolve(thisUtil.taskFolder, `./fmap`))
+        let fmap = fs.readFileSync(pathutil.resolve(thisUtil.taskFolder, `./fmap`),'utf8')
         fmap = JSON.parse(fmap);
         return fmap;
+    },
+    loadTask:(taskname)=>{
+        console.log('load:', taskname)
+        let txt = fs.readFileSync(pathutil.resolve(thisUtil.taskFolder, `./${taskname}`),'utf8')
+        txt = txt.replace(/\,$/,'')
+        let arr = txt.split(',');
+        let task = []
+        arr.forEach((o)=>{
+            let pair = {
+                a: o.split(':')[0],
+                b: o.split(':')[1]
+            }
+            task.push(pair);
+        })
+        return {
+            task, 
+            taskname
+        };
     },
     saveReport:(taskname, report)=>{
         console.log('save', taskname)
@@ -90,7 +108,6 @@ let thisUtil = {
         tasksList.forEach((info, i)=>{            
             callback(info.tasks, {
                                     totalTaskCount: tasksList.length,
-                                    currentTaskIdx:i,
                                     taskname:info.taskname, 
                                     fmap
                                 });

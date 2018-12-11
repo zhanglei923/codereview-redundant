@@ -13,7 +13,7 @@ if (cluster.isMaster) {
   for (let i = 0; i < 2; i++) {
     let worker = cluster.fork();
     worker.on('message', function(message) {
-      console.log(`(m).${process.pid} got: '${JSON.stringify(message)}' from w.${worker.process.pid}`);
+      console.log(`(master).${process.pid} got: '${JSON.stringify(message)}' from w.${worker.process.pid}`);
       if(message === MSG_REQUEST_TASKID){
         if(taskStack.length > 0){
           let taskid = taskStack.shift();

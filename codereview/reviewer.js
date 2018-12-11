@@ -161,7 +161,6 @@ const thisUtil = {
         let taskname = info.taskname;
         let fpathmap = info.fmap;
         let totalTaskCount = info.totalTaskCount;
-        let currentTaskIdx = info.currentTaskIdx;
 
         let timems = new Date();
         let report = []
@@ -187,7 +186,7 @@ const thisUtil = {
             let count = i;
             if(count % 23 === 0) {
                 let costms = new Date() - timems;
-                console.log('count='+count, 'ms='+costms, `multi-task: ${currentTaskIdx} of ${totalTaskCount}`, (count/pairs.length)*100+'%')
+                console.log('count='+count, 'ms='+costms, `multi-task: ${totalTaskCount}`, (count/pairs.length)*100+'%')
                 timems = new Date();
             }
             report.push({
