@@ -6,6 +6,7 @@ var jsdiff = require('diff');
 let fileUtil = require('../util/fileUtil')
 let scriptUtil = require('../util/scriptUtil')
 let multiTaskUtil = require('../util/multiTaskUtil')
+let displayUtil = require('../util/displayUtil')
 let lineBrkReg = /(\r\n){1,}/g
 let lineBrkString = '\r\n';
 
@@ -49,9 +50,12 @@ const thisUtil = {
             let reddntLine = thisUtil.getRedundantLine(source1, source2);
             //console.log(reddntLine, path1+':'+path2)
             let count = i;
-            if(count % 277 === 0) {
+            if(count % 477 === 0) {
                 let costms = new Date() - timems;
-                console.log('count='+count, 'ms='+costms, `tasks=${currentTaskNum}/${totalTaskNum},#${workerId}`, (count/pairs.length)*100+'%')
+                console.log(`[${displayUtil.percentage(currentTaskNum, totalTaskNum)}%]#${workerId}:thread=${currentTaskNum}/${totalTaskNum}`, 
+                            'ms='+costms, 
+                            '('+displayUtil.percentage(count, pairs.length)+'%)'
+                            )
                 timems = new Date();
             }
             report.push({
