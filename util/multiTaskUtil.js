@@ -1,11 +1,12 @@
-var fs = require('fs');
-var pathutil = require('path');
+let fs = require('fs');
+let pathutil = require('path');
+let moment = require('moment');
 
 let thisUtil = {
     CLUSTER_SIZE: 5000,
     taskCount: 0,
     taskFolder: null,
-    taskId: (''+Math.random()).replace(/\./g, ''),
+    taskId: (moment().format('YYYYMMDD_hhmmss'))+'-'+(Math.random()+'').replace(/\./g, '').substring(6),
     reportFolder: null,
     init: (ctxPath)=>{
         thisUtil.taskCount = 0;
