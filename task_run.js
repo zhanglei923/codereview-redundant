@@ -48,7 +48,7 @@ if (cluster.isMaster) {
 
 } else {
   let worker = cluster.worker;
-  console.log(`w.${process.pid} started`);
+  console.log(`>[w]=${process.pid} started`);
   process.on('message', function(message) {});
   worker.on('message', function(message) {
       if(message.taskid){

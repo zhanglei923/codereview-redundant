@@ -46,7 +46,6 @@ let thisUtil = {
     },
     loadTask:(taskname)=>{
         //console.log('load:', taskname)
-        console.log('x', thisUtil.taskFolder, taskname)
         let txt = fs.readFileSync(pathutil.resolve(thisUtil.taskFolder, `./${taskname}`),'utf8')
         txt = txt.replace(/\,$/,'')
         let arr = txt.split(',');
