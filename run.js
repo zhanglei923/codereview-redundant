@@ -4,7 +4,8 @@ var _ = require('lodash');
 var minimist = require('minimist');
 let multiTaskUtil = require('./util/multiTaskUtil')
 
-let reviewer = require('./codereview/reviewer')
+let generateTasks = require('./codereview/generateTasks')
+let runTasks = require('./codereview/runTasks')
 let filter_rkweb = require('./codereview/filters/filter-rk-web')
 
 //test:
@@ -34,12 +35,11 @@ filterFuns.push(filter_rkweb)
 
 
 let t0 = new Date()
-reviewer.check(codePath, {
+generateTasks.check(codePath, {
                             regexs: [/.js$/, /.tpl$/],
                             functions: filterFuns
-                        }, ()=>{
-                            console.log('cost', new Date() - t0)
                         });
+runTasks.run(codePath);
 
 // fs.writeFileSync('./.report/report.json', JSON.stringify(report))
 // fs.writeFileSync(pathutil.resolve(reportsPath, './report.json'), JSON.stringify(report))
