@@ -1,6 +1,7 @@
 let fs = require('fs');
 let pathutil = require('path');
 let moment = require('moment');
+let _ = require('lodash')
 
 let thisUtil = {
     CLUSTER_SIZE: 5000,
@@ -30,6 +31,11 @@ let thisUtil = {
         fs.writeFileSync(filepath, JSON.stringify(fmap))
         filepath = pathutil.resolve(thisUtil.reportFolder, `./fmap`);
         fs.writeFileSync(filepath, JSON.stringify(fmap))
+        let rptmap = [];
+        for(let key in fmap){rptmap.push(fmap[key]);}
+        rptmap = _.sortBy(rptmap, 'lineNum').reverse();
+        filepath = pathutil.resolve(thisUtil.taskFolder, `./frpt`);
+        fs.writeFileSync(filepath, JSON.stringify(rptmap))
     },
     saveSubTasks: (task)=> {
         let filepath = pathutil.resolve(thisUtil.taskFolder, `./task${thisUtil.taskCount}`);
@@ -95,10 +101,10 @@ let thisUtil = {
         let tasksList = []
         list.forEach(function(file) {
             file = dir + '/' + file
+            let pathinfo = pathutil.parse(file)
+            let filename = pathinfo.name;
             var stat = fs.statSync(file)
-            if (stat && !stat.isDirectory() && !/fmap$/.test(file)) {
-                let pathinfo = pathutil.parse(file)
-                let filename = pathinfo.name;
+            if (stat && !stat.isDirectory() && /^task/.test(filename)) {
                 let taskname = filename;
                 //console.log(filename)
                 let taskinfo = thisUtil.loadTask(taskname);
