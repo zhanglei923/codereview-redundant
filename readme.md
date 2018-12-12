@@ -1,4 +1,6 @@
 codereview
 
-`yarn install`
-`sh ./run.sh  %src_path%`
+`
+yarn install
+sh ./run.sh  %src_path%
+`
