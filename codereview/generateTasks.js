@@ -3,7 +3,7 @@ var _ = require('lodash');
 var md5Util = require("blueimp-md5")//https://github.com/blueimp/JavaScript-MD5
 var pathutil = require('path');
 var jsdiff = require('diff');
-let fileUtil = require('../util/fileUtil')
+let eachcontent = require('eachcontent-js')
 let scriptUtil = require('../util/scriptUtil')
 let multiTaskUtil = require('../util/multiTaskUtil')
 let lineBrkReg = /(\r\n){1,}/g
@@ -29,7 +29,7 @@ const thisUtil = {
             })
             return ok;
         };
-        fileUtil.eachContent(codePath, filters.regexs, (src, fpath)=>{
+        eachcontent.eachContent(codePath, filters.regexs, (src, fpath)=>{
             fpath = fpath.replace(/\\{1,}/, '/');
             fpath = fpath.replace(/\/{1,}/, '/');
             //console.log(runFilters(fpath), fpath)
