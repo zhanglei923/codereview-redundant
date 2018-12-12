@@ -36,6 +36,8 @@ let thisUtil = {
         rptmap = _.sortBy(rptmap, 'lineNum').reverse();
         filepath = pathutil.resolve(thisUtil.taskFolder, `./frpt`);
         fs.writeFileSync(filepath, JSON.stringify(rptmap))
+        filepath = pathutil.resolve(thisUtil.reportFolder, `./frpt`);
+        fs.writeFileSync(filepath, JSON.stringify(rptmap))
     },
     saveSubTasks: (task)=> {
         let filepath = pathutil.resolve(thisUtil.taskFolder, `./task${thisUtil.taskCount}`);
