@@ -48,6 +48,9 @@ const thisUtil = {
             source1 = source1.replace(/function[\s]{0,}\(/g, 'function(')
             source2 = source2.replace(/function[\s]{0,}\(/g, 'function(')
 
+            // if(path1.indexOf('createDialogCtrl')>=0) fs.writeFileSync('./a.js', source1)
+            // if(path2.indexOf('updateDialogCtrl')>=0) fs.writeFileSync('./b.js', source2)
+
             //console.log(source1, source2)
             let reddntLine = thisUtil.getRedundantLine(source1, source2);
             //console.log(reddntLine, path1+':'+path2)
