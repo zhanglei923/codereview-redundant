@@ -45,8 +45,8 @@ const thisUtil = {
             source1 = source1.replace(lineBrkReg, lineBrkString);
             source2 = source2.replace(lineBrkReg, lineBrkString);
 
-            // source1 = source1.replace(/(\r\n){1,}/g, lineBrkString);
-            // source2 = source2.replace(/(\r\n){1,}/g, lineBrkString);
+            source1 = source1.replace(/function[\s]{0,}\(/g, 'function(')
+            source2 = source2.replace(/function[\s]{0,}\(/g, 'function(')
 
             //console.log(source1, source2)
             let reddntLine = thisUtil.getRedundantLine(source1, source2);
