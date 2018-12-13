@@ -13,6 +13,8 @@ let lineBrkString = '\r\n';
 let fpathCount = 0;
 let fpathMap = {};
 
+let SIZE_OF_NOISE = 5;
+
 const thisUtil = {
     runCompare:(taskinfo, displayInfo)=>{
         var pairs = taskinfo.task;
@@ -73,6 +75,7 @@ const thisUtil = {
         var diffInfo = source1.length < source2.length ? jsdiff.diffTrimmedLines(source1, source2) : jsdiff.diffTrimmedLines(source2, source1);
         diffInfo.forEach((info)=>{
             if(!info.removed && !info.added) {
+                if(info.count > SIZE_OF_NOISE)
                 redundantLine += info.count;
             }
         })
