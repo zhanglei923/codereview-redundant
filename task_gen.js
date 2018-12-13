@@ -13,7 +13,7 @@ let filter_rkweb = require('./codereview/filters/filter-rk-web')
 //> node main.js --src E:/workspaceGerrit/_sub_branches/apps-ingage-web/src/main/webapp/static/source
 let reportsPath = pathutil.resolve(__dirname,'../codereview-redundant-reports/')
 let tasksPath = pathutil.resolve(__dirname,'../codereview-redundant-tasks/')
-if (!fs.existsSync(reportsPath)){fs.mkdirSync(reportsPath)}
+//if (!fs.existsSync(reportsPath)){fs.mkdirSync(reportsPath)}
 if (!fs.existsSync(tasksPath)){fs.mkdirSync(tasksPath)}
 if (!fs.existsSync('./.reports')){fs.mkdirSync('./.reports')}
 multiTaskUtil.init(tasksPath)
