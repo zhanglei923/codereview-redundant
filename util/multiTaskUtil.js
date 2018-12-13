@@ -7,7 +7,7 @@ let thisUtil = {
     CLUSTER_SIZE: 5000,
     taskCount: 0,
     taskFolder: null,
-    taskId: (moment().format('YYYYMMDD_hhmmss'))+'-'+(Math.random()+'').replace(/\./g, '').substring(6),
+    taskId: (moment().format('YYYYMMDD_hhmmss'))+'-'+(Math.random()+'').replace(/\./g, '').substring(2,6),
     reportFolder: null,
     init: (ctxPath, taskId)=>{
         thisUtil.taskCount = 0;
