@@ -30,6 +30,10 @@ let codePath = terminalOps.src;
 console.log(codePath)
 codePath = pathutil.resolve(__dirname, codePath)
 
+if (!fs.existsSync(codePath)) {
+    throw 'Path not exist: '+codePath
+}
+
 let filterFuns = [];
 filterFuns.push(filter_rkweb)
 

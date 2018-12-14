@@ -39,17 +39,8 @@ const thisUtil = {
             let source1 = fs.readFileSync(path1,'utf8');//fpathmap[path1];
             let source2 = fs.readFileSync(path2,'utf8');//fpathmap[path2];
 
-            source1 = scriptUtil.decomment(source1);
-            source2 = scriptUtil.decomment(source2);
-
-            source1 = source1.replace(lineBrkReg, lineBrkString);
-            source2 = source2.replace(lineBrkReg, lineBrkString);
-
-            source1 = source1.replace(/function[\s]{0,}\(/g, 'function(')
-            source2 = source2.replace(/function[\s]{0,}\(/g, 'function(')
-
-            // if(path1.indexOf('createDialogCtrl')>=0) fs.writeFileSync('./a.js', source1)
-            // if(path2.indexOf('updateDialogCtrl')>=0) fs.writeFileSync('./b.js', source2)
+            source1 = thisUtil.cleanCode(source1)
+            source2 = thisUtil.cleanCode(source2);
 
             //console.log(source1, source2)
             let reddntLine = thisUtil.getRedundantLine(source1, source2);
@@ -71,6 +62,14 @@ const thisUtil = {
         }
         report = _.sortBy(report, 'l').reverse();
         multiTaskUtil.saveReport(taskname, report);
+    },
+    cleanCode: (source)=>{
+        // if(path1.indexOf('createDialogCtrl')>=0) fs.writeFileSync('./a.js', source1)
+        // if(path2.indexOf('updateDialogCtrl')>=0) fs.writeFileSync('./b.js', source2)
+        source = scriptUtil.decomment(source);
+        source = source.replace(lineBrkReg, lineBrkString);
+        source = source.replace(/function[\s]{0,}\(/g, 'function(')
+        return source;
     },
     getRedundantLine: (source1, source2) =>{
         let redundantLine = 0;

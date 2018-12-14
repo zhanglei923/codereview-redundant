@@ -16,9 +16,9 @@ diff@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/diff/-/diff-3.5.0.tgz#800c0dd1e0a8bfbc95835c202ad220fe317e5a12"
 
-eachcontent-js@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/eachcontent-js/-/eachcontent-js-1.0.0.tgz#222107c487567ba5abfcf00fc5f83d38082409d0"
+eachcontent-js@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/eachcontent-js/-/eachcontent-js-1.0.2.tgz#a0e0f8d4dfc8c4da742e913e44838fd6604765d8"
 
 esprima@4.0.1:
   version "4.0.1"
