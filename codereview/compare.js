@@ -69,6 +69,7 @@ const thisUtil = {
         source = scriptUtil.decomment(source);
         source = source.replace(lineBrkReg, lineBrkString);
         source = source.replace(/function[\s]{0,}\(/g, 'function(')
+        source = source.replace(/(\r\n)?{/g, '{')
         source = source.replace(/( ){1,}/g,'')//防止有人格式化代码，绕过行对比
         source = source.replace(/\}( ){1,}\;/g,'};')//防止有人格式化代码，绕过行对比
         return source;
