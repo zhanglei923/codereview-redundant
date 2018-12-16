@@ -13,7 +13,7 @@ let lineBrkString = '\r\n';
 let fpathCount = 0;
 let fpathMap = {};
 
-let SIZE_OF_NOISE = 5;
+let SIZE_OF_NOISE = 4;
 
 const thisUtil = {
     runCompare:(taskinfo, displayInfo)=>{
