@@ -2,3 +2,5 @@ node_modules/
 .reports/
 .tasks/
 .tmp_info
+/testdata/
+/testdatarpt/

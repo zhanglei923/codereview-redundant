@@ -69,16 +69,22 @@ const thisUtil = {
         source = scriptUtil.decomment(source);
         source = source.replace(lineBrkReg, lineBrkString);
         source = source.replace(/function[\s]{0,}\(/g, 'function(')
+        source = source.replace(/( ){1,}/g,'')//防止有人格式化代码，绕过行对比
+        source = source.replace(/\}( ){1,}\;/g,'};')//防止有人格式化代码，绕过行对比
         return source;
     },
-    getRedundantLine: (source1, source2) =>{
+    getRedundantLine: (source1, source2, debug) =>{
+        if(typeof debug === 'undefined') debug = false;
         let redundantLine = 0;
         //确保文件较小的在前，文件较大的在后
         var diffInfo = source1.length < source2.length ? jsdiff.diffTrimmedLines(source1, source2) : jsdiff.diffTrimmedLines(source2, source1);
+        let sametexts = ''
         diffInfo.forEach((info)=>{
             if(!info.removed && !info.added) {
-                if(info.count > SIZE_OF_NOISE)
-                redundantLine += info.count;
+                if(info.count > SIZE_OF_NOISE){
+                    redundantLine += info.count;
+                    if(debug) sametexts += info.value;
+                }
             }
         })
         return redundantLine;
