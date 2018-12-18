@@ -113,7 +113,8 @@ const thisUtil = {
         }
         let p1 = pathutil.parse(o1.fpath)
         let p2 = pathutil.parse(o2.fpath)
-        if(p1.ext !== p2.ext) ok = false;//只对比同扩展名的
+        // 有时也不必只对比同扩展名，比如ts和js文件，要同时比对
+        //if(p1.ext !== p2.ext) ok = false;//只对比同扩展名的
         return ok;
     },
     generateMultiTasks: (info) =>{

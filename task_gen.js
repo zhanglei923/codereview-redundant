@@ -3,14 +3,15 @@ var pathutil = require('path');
 var _ = require('lodash');
 var minimist = require('minimist');
 let multiTaskUtil = require('./util/multiTaskUtil')
-
+let scriptUtil = require('./util/scriptUtil')
 let generateTasks = require('./codereview/generateTasks')
 let runTasks = require('./codereview/runTasks')
 let filter_rkweb = require('./codereview/filters/filter-rk-web')
 
 //test:
 //> sh run.sh D:/workspaces/source-201812/source/oa/js/approval
-//> sh run.sh D:/workspaces/source-201812/source/designer
+//> sh run.sh D:/workspaces/source-201812/source/designer?ext=js+tpl&config=
+//> sh run.sh D:/workspaces/source-201812/source/designer?ext=js
 //> sh run.sh E:/workspaceGerrit/_sub_branches/apps-ingage-web/src/main/webapp/static/source
 let reportsPath = pathutil.resolve(__dirname,'../codereview-redundant-reports/')
 let tasksPath = pathutil.resolve(__dirname,'../codereview-redundant-tasks/')
@@ -26,22 +27,35 @@ var cmdOptions = {
     }
 };
 var terminalOps = minimist(process.argv.slice(2), cmdOptions);
-let codePath = terminalOps.src;
+let pathConfigStr = terminalOps.src;
 
-console.log(codePath)
+console.log(pathConfigStr)
+let codePath = pathConfigStr.split('?')[0]
+let configs = pathConfigStr.split('?')[1]
+
 codePath = pathutil.resolve(__dirname, codePath)
+console.log('codePath', codePath)
 
 if (!fs.existsSync(codePath)) {
     throw 'Path not exist: '+codePath
 }
 
+let fileExts = [/.js$/]
+if(configs){
+    let exts = configs.replace(/ext\=/ig,'')
+    fileExts = exts.split('+')
+    for(let i=0;i<fileExts.length;i++){
+        fileExts[i] = new RegExp('\.'+fileExts[i]+'$')
+    }
+}
+console.log('fileExts', fileExts)
+
 let filterFuns = [];
 filterFuns.push(filter_rkweb)
 
-
 let t0 = new Date()
 let taskId = generateTasks.generate(codePath, {
-                            regexs: [/.js$/, /.tpl$/],
+                            regexs: fileExts,//[/.js$/, /.tpl$/],
                             functions: filterFuns
                         });
 let cookiePath = pathutil.resolve(__dirname, './.tmp_info')
