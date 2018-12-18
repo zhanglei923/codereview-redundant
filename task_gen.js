@@ -66,6 +66,6 @@ let taskId = generateTasks.generate(codePath, {
 let cookiePath = pathutil.resolve(__dirname, './.tmp_info')
 fs.writeFileSync(cookiePath, JSON.stringify({tasksPath, taskId}))
 //runTasks.run(codePath);
-
+//
 // fs.writeFileSync('./.report/report.json', JSON.stringify(report))
 // fs.writeFileSync(pathutil.resolve(reportsPath, './report.json'), JSON.stringify(report))
