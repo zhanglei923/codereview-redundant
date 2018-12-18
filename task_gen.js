@@ -2,6 +2,7 @@ var fs = require('fs');
 var pathutil = require('path');
 var _ = require('lodash');
 var minimist = require('minimist');
+const queryString = require('query-string');
 let multiTaskUtil = require('./util/multiTaskUtil')
 let scriptUtil = require('./util/scriptUtil')
 let generateTasks = require('./codereview/generateTasks')
@@ -10,8 +11,8 @@ let filter_rkweb = require('./codereview/filters/filter-rk-web')
 
 //test:
 //> sh run.sh D:/workspaces/source-201812/source/oa/js/approval
-//> sh run.sh D:/workspaces/source-201812/source/designer?ext=js+tpl&config=
-//> sh run.sh D:/workspaces/source-201812/source/designer?ext=js
+//> sh run.sh D:/workspaces/source-201812/source/designer?filetypes=js+tpl+aaa+bbb&config=
+//> sh run.sh D:/workspaces/source-201812/source/designer?filetypes=js
 //> sh run.sh E:/workspaceGerrit/_sub_branches/apps-ingage-web/src/main/webapp/static/source
 let reportsPath = pathutil.resolve(__dirname,'../codereview-redundant-reports/')
 let tasksPath = pathutil.resolve(__dirname,'../codereview-redundant-tasks/')
@@ -42,10 +43,14 @@ if (!fs.existsSync(codePath)) {
 
 let fileExts = [/.js$/]
 if(configs){
-    let exts = configs.replace(/ext\=/ig,'')
-    fileExts = exts.split('+')
-    for(let i=0;i<fileExts.length;i++){
-        fileExts[i] = new RegExp('\.'+fileExts[i]+'$')
+    const parsed = queryString.parse(configs);
+    console.log('<parsed>:', parsed)
+    let filetypes = parsed.filetypes;
+    if(filetypes){
+        fileExts = filetypes.split(/\s/)
+        for(let i=0;i<fileExts.length;i++){
+            fileExts[i] = new RegExp('\.'+fileExts[i]+'$')
+        }
     }
 }
 console.log('fileExts', fileExts)
