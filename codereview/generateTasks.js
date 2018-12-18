@@ -103,13 +103,18 @@ const thisUtil = {
         // 3 x x x o o
         // 4 x x x x o
         // 5 x x x x x
+        let ok = true
         let o1 = fpathmap[key1];
         let o2 = fpathmap[key2];
         if(o1.idx < o2.idx){
-            return true;
+            //ok = true;
         }else{
-            return false;
+            ok = false;
         }
+        let p1 = pathutil.parse(o1.fpath)
+        let p2 = pathutil.parse(o2.fpath)
+        if(p1.ext !== p2.ext) ok = false;//只对比同扩展名的
+        return ok;
     },
     generateMultiTasks: (info) =>{
         let fpathmap = info.fpathMap;
