@@ -6,6 +6,7 @@ var jsdiff = require('diff');
 let eachcontent = require('eachcontent-js')
 let scriptUtil = require('../util/scriptUtil')
 let multiTaskUtil = require('../util/multiTaskUtil')
+let compare = require('./compare')
 let lineBrkReg = /(\r\n){1,}/g
 let lineBrkString = '\r\n';
 
@@ -35,10 +36,16 @@ const thisUtil = {
             //console.log(runFilters(fpath), fpath)
             if(runFilters(fpath)){
                 let fkey = ''+fpathCount.toString(36)
+                let lineNumCleaned=0;
+                let cleanedSrc = src;
+                if(/\.js$/.test(fpath)){
+                    cleanedSrc = compare.cleanCode(src);
+                }
                 //console.log('>>', fpathCount, fkey)
                 fpathMap[fkey] = {
                     fkey,
                     lineNum: src.split('\n').length,
+                    lineNumc: cleanedSrc.split('\n').length,
                     fpath,
                     idx: fpathCount
                 };
