@@ -9,7 +9,9 @@
 //> sh runconfig.sh E:/workspaceGerrit/_sub_branches/apps-ingage-web/src/main/webapp/static/source
 
 {
-    "targetFolder": "/Users/zhanglei/workspaces/apps-ingage-web/src/main/webapp/static/source/oa/js/approval",
+    //"targetFolder": "/Users/zhanglei/workspaces/apps-ingage-web/src/main/webapp/static/source/oa/js/approval",
+    //"targetFolder": "/Users/zhanglei/workspaces/apps-ingage-web/src/main/webapp/static/source/oa/",
+    "targetFolder": "/Users/zhanglei/workspaces/apps-ingage-web/src/main/webapp/static/source/designer/",
     "filetypes": ["js","tpl",/\.aaa$/,/\.bbb$/],
     "acceptFileFilter": (fpath)=>{
         if(    /\/lib\//g.test(fpath)
