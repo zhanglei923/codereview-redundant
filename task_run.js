@@ -21,7 +21,9 @@ multiTaskUtil.initTaskFolder();
 multiTaskUtil.loadFileMap();
 
 if (cluster.isMaster) {
+  let numWorks = numCPUs+2;
   console.log(`numCPUs ${numCPUs}`);
+  console.log(`numWorks ${numWorks}`);
   console.log(`Master=${process.pid}`);
 
   let tasks = multiTaskUtil.beforePopTask();//get ready
@@ -29,7 +31,7 @@ if (cluster.isMaster) {
   taskStack = tasks;
   let totalTaskNum = taskStack.length; 
 
-  for (let i = 0; i < numCPUs; i++) {
+  for (let i = 0; i < numWorks; i++) {
     let worker = cluster.fork();
     worker.on('message', function(message) {
       //console.log(`(master).${process.pid} got: '${JSON.stringify(message)}' from w.${worker.process.pid}`);
