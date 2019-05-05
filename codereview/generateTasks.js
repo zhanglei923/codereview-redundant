@@ -30,7 +30,7 @@ const thisUtil = {
             })
             return ok;
         };
-        eachcontent.eachContent(codePath, filters.regexs, (src, fpath)=>{
+        eachcontent.eachContent(codePath, filters.acceptFileTypes, (src, fpath)=>{
             fpath = fpath.replace(/\\{1,}/, '/');
             fpath = fpath.replace(/\/{1,}/, '/');
             //console.log(runFilters(fpath), fpath)

@@ -51,7 +51,8 @@ filterFuns.push(filter_rkweb)
 
 let t0 = new Date()
 let taskId = generateTasks.generate(codePath, {
-                            regexs: fileExts,//[/.js$/, /.tpl$/],
+                            acceptFileTypes: fileExts,//[/.js$/, /.tpl$/],
+                            excludeFileTypes: config.excludeFileTypes?config.excludeFileTypes:[],
                             functions: filterFuns
                         });
 let cookiePath = pathutil.resolve(__dirname, './.tmp_info')
