@@ -2,7 +2,7 @@ codereview
 
 ```shell
 yarn install
-sh ./run.sh  %src_path%
+sh ./run.sh ./test/test_config.js
 ```
 
 License GPL 
