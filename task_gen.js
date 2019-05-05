@@ -16,38 +16,34 @@ if (!fs.existsSync(tasksPath)){fs.mkdirSync(tasksPath)}
 if (!fs.existsSync('./.reports')){fs.mkdirSync('./.reports')}
 multiTaskUtil.init(tasksPath)
 
-var cmdOptions = {
-    string: 'src',
-    default: {
-        src: null
-    }
-};
-var terminalOps = minimist(process.argv.slice(2), cmdOptions);
-let pathConfigStr = terminalOps.src;
-
-console.log(pathConfigStr)
-let codePath = pathConfigStr.split('?')[0]
-let configs = pathConfigStr.split('?')[1]
-
+var terminalOps = minimist(process.argv.slice(2), {});
+console.log(terminalOps)
+let fileConfigPath = terminalOps.configfile;
+let configPath = pathutil.resolve(__dirname, fileConfigPath);
+if(!fs.existsSync(configPath)){
+    console.log('file not exist:', configPath)
+    return;
+}
+let configTxt = fs.readFileSync(configPath, 'utf8')
+let config = {};
+eval(`config=${configTxt}`)
+let codePath = config.targetFolder;
 codePath = pathutil.resolve(__dirname, codePath)
-console.log('codePath', codePath)
 
 if (!fs.existsSync(codePath)) {
     throw 'Path not exist: '+codePath
 }
-
 let fileExts = [/.js$/]
-if(configs){
-    const parsed = queryString.parse(configs);
-    console.log('<parsed>:', parsed)
-    let filetypes = parsed.filetypes;
-    if(filetypes){
-        fileExts = filetypes.split(/\s/)
-        for(let i=0;i<fileExts.length;i++){
-            fileExts[i] = new RegExp('\.'+fileExts[i]+'$')
+if(config.filetypes){
+    fileExts = [];
+    config.filetypes.forEach((type)=>{
+        if(typeof type === 'string'){
+            type = new RegExp('\.'+type+'$');
         }
-    }
+        fileExts.push(type);
+    })
 }
+console.log('codePath', codePath)
 console.log('fileExts', fileExts)
 
 let filterFuns = [];

@@ -1,0 +1,14 @@
+// sh ./runconfig.sh /Users/zhanglei/workspaces/apps-ingage-web/src/main/webapp/static/source
+// sh ./runconfig.sh /Users/zhanglei/workspaces/apps-ingage-web/src/main/webapp/static/source/designer
+// sh ./runconfig.sh /Users/zhanglei/workspaces/apps-ingage-web/src/main/webapp/static/source/oa/js/approval
+
+//test:
+//> sh runconfig.sh D:/workspaces/source-201812/source/oa/js/approval
+//> sh runconfig.sh D:/workspaces/source-201812/source/designer?filetypes=js+tpl+aaa+bbb&config=
+//> sh runconfig.sh D:/workspaces/source-201812/source/designer?filetypes=js
+//> sh runconfig.sh E:/workspaceGerrit/_sub_branches/apps-ingage-web/src/main/webapp/static/source
+
+{
+    "targetFolder": "/Users/zhanglei/workspaces/apps-ingage-web/src/main/webapp/static/source/oa/js/approval",
+    "filetypes": ["js","tpl",/\.aaa$/,/\.bbb$/]
+}
