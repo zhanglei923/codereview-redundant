@@ -9,6 +9,8 @@ let generateTasks = require('./codereview/generateTasks')
 let runTasks = require('./codereview/runTasks')
 let filter_rkweb = require('./codereview/filters/filter-rk-web')
 
+let cookiePath = pathutil.resolve(__dirname, './.tmp_info')
+fs.writeFileSync(cookiePath, JSON.stringify({}))//clean
 let reportsPath = pathutil.resolve(__dirname,'../codereview-redundant-reports/')
 let tasksPath = pathutil.resolve(__dirname,'../codereview-redundant-tasks/')
 //if (!fs.existsSync(reportsPath)){fs.mkdirSync(reportsPath)}
@@ -47,15 +49,13 @@ console.log('codePath', codePath)
 console.log('fileExts', fileExts)
 
 let filterFuns = [];
-filterFuns.push(filter_rkweb)
+filterFuns = filterFuns.concat(config.acceptFileFilter?[config.acceptFileFilter]:[])
 
 let t0 = new Date()
 let taskId = generateTasks.generate(codePath, {
                             acceptFileTypes: fileExts,//[/.js$/, /.tpl$/],
-                            excludeFileTypes: config.excludeFileTypes?config.excludeFileTypes:[],
                             functions: filterFuns
                         });
-let cookiePath = pathutil.resolve(__dirname, './.tmp_info')
 fs.writeFileSync(cookiePath, JSON.stringify({tasksPath, taskId}))
 //runTasks.run(codePath);
 //

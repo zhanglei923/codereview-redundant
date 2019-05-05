@@ -1,4 +1,4 @@
-# sh ./run.sh ./test/test_config.json
+# sh ./run.sh ./test/test_config.js
 
 echo $1
 node task_gen --configfile $1

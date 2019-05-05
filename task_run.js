@@ -12,7 +12,10 @@ let tmp_info = fs.readFileSync(pathutil.resolve(__dirname, './.tmp_info'), 'utf8
 tmp_info = JSON.parse(tmp_info);
 let taskId = tmp_info.taskId;
 let tasksPath = tmp_info.tasksPath;
-
+if(!taskId || !tasksPath){
+  console.log('can not find taskId/tasksPath:', taskId, tasksPath)
+  return;
+}
 multiTaskUtil.init(tasksPath, taskId);
 multiTaskUtil.initTaskFolder();
 multiTaskUtil.loadFileMap();
