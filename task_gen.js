@@ -9,11 +9,6 @@ let generateTasks = require('./codereview/generateTasks')
 let runTasks = require('./codereview/runTasks')
 let filter_rkweb = require('./codereview/filters/filter-rk-web')
 
-//test:
-//> sh run.sh D:/workspaces/source-201812/source/oa/js/approval
-//> sh run.sh D:/workspaces/source-201812/source/designer?filetypes=js+tpl+aaa+bbb&config=
-//> sh run.sh D:/workspaces/source-201812/source/designer?filetypes=js
-//> sh run.sh E:/workspaceGerrit/_sub_branches/apps-ingage-web/src/main/webapp/static/source
 let reportsPath = pathutil.resolve(__dirname,'../codereview-redundant-reports/')
 let tasksPath = pathutil.resolve(__dirname,'../codereview-redundant-tasks/')
 //if (!fs.existsSync(reportsPath)){fs.mkdirSync(reportsPath)}
