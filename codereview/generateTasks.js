@@ -39,7 +39,7 @@ const thisUtil = {
                 let lineNumCleaned=0;
                 let cleanedSrc = src;
                 if(/\.js$/.test(fpath)){
-                    cleanedSrc = compare.cleanCode(src);
+                    cleanedSrc = scriptUtil.cleanCode(src);
                 }
                 //console.log('>>', fpathCount, fkey)
                 fpathMap[fkey] = {

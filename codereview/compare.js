@@ -7,8 +7,6 @@ let eachcontent = require('eachcontent-js')
 let scriptUtil = require('../util/scriptUtil')
 let multiTaskUtil = require('../util/multiTaskUtil')
 let displayUtil = require('../util/displayUtil')
-let lineBrkReg = /(\r\n){1,}/g
-let lineBrkString = '\r\n';
 
 let fpathCount = 0;
 let fpathMap = {};
@@ -39,8 +37,8 @@ const thisUtil = {
             let source1 = fs.readFileSync(path1,'utf8');//fpathmap[path1];
             let source2 = fs.readFileSync(path2,'utf8');//fpathmap[path2];
 
-            source1 = thisUtil.cleanCode(source1)
-            source2 = thisUtil.cleanCode(source2);
+            source1 = scriptUtil.cleanCode(source1)
+            source2 = scriptUtil.cleanCode(source2);
 
             //console.log(source1, source2)
             let reddntLine = thisUtil.getRedundantLine(source1, source2);
@@ -62,17 +60,6 @@ const thisUtil = {
         }
         report = _.sortBy(report, 'l').reverse();
         multiTaskUtil.saveReport(taskname, report);
-    },
-    cleanCode: (source)=>{
-        // if(path1.indexOf('createDialogCtrl')>=0) fs.writeFileSync('./a.js', source1)
-        // if(path2.indexOf('updateDialogCtrl')>=0) fs.writeFileSync('./b.js', source2)
-        source = scriptUtil.decomment(source);
-        source = source.replace(lineBrkReg, lineBrkString);
-        source = source.replace(/function[\s]{0,}\(/g, 'function(')
-        source = source.replace(/(\r\n)?{/g, '{')
-        source = source.replace(/( ){1,}/g,'')//防止有人格式化代码，绕过行对比
-        source = source.replace(/\}( ){1,}\;/g,'};')//防止有人格式化代码，绕过行对比
-        return source;
     },
     getRedundantLine: (source1, source2, debug) =>{
         if(typeof debug === 'undefined') debug = false;
