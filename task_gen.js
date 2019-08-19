@@ -15,14 +15,9 @@ let cookiePath = pathutil.resolve(__dirname, './.tmp_info')
 fs.writeFileSync(cookiePath, JSON.stringify({}))//clean
 let reportsPath = pathutil.resolve(__dirname,'../codereview-redundant-reports/')
 let tasksPath = pathutil.resolve(__dirname,'../codereview-redundant-tasks/')
-let cachePath = pathutil.resolve(__dirname,'../codereview-redundant-cache/')
 //if (!fs.existsSync(reportsPath)){fs.mkdirSync(reportsPath)}
 makeDir.sync(`${tasksPath}`)
 if (!fs.existsSync('./.reports')){fs.mkdirSync('./.reports')}
-makeDir.sync(`${cachePath}`)
-
-cacheUtil.setRootFolder(cachePath)
-//cacheUtil.setCache('compaire_result', 'xxxxx', 'bbb')
 
 multiTaskUtil.init(tasksPath)
 

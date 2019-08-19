@@ -38,11 +38,34 @@ const thisUtil = {
             let source1 = fs.readFileSync(path1,'utf8');//fpathmap[path1];
             let source2 = fs.readFileSync(path2,'utf8');//fpathmap[path2];
 
-            source1 = scriptUtil.cleanCode(source1, path1)
-            source2 = scriptUtil.cleanCode(source2, path2);
+            //确保文件较小的在前，文件较大的在后
+            let txta,txtb;
+            if(source1.length < source2.length){
+                txta = source1;
+                txtb = source2;
+            }else{
+                txta = source2;
+                txtb = source1;
+            }
+            source1 = txta;
+            source2 = txtb;
 
-            //console.log(source1, source2)
-            let reddntLine = thisUtil.getRedundantLine(source1, source2);
+            let hash1 = cacheUtil.md5(source1);
+            let hash2 = cacheUtil.md5(source2);
+            let key = hash1 + '-' + hash2;
+
+            let reddntLine = cacheUtil.getCache('compared_linenum', key)
+            if(typeof reddntLine === 'undefined'){
+                source1 = scriptUtil.cleanCode(source1, path1)
+                source2 = scriptUtil.cleanCode(source2, path2);
+    
+                //console.log(source1, source2)
+                reddntLine = thisUtil.getRedundantLine(source1, source2);
+                cacheUtil.setCache('compared_linenum', key, reddntLine);
+            }else{
+                if(!reddntLine) reddntLine = 0;
+                reddntLine = parseInt(reddntLine);
+            }
             //console.log(reddntLine, path1+':'+path2)
             let count = i;
             if(count % 477 === 0) {
@@ -65,16 +88,7 @@ const thisUtil = {
     getRedundantLine: (source1, source2, debug) =>{
         if(typeof debug === 'undefined') debug = false;
         let redundantLine = 0;
-        //确保文件较小的在前，文件较大的在后
-        let txta,txtb;
-        if(source1.length < source2.length){
-            txta = source1;
-            txtb = source2;
-        }else{
-            txta = source2;
-            txtb = source1;
-        }
-        var diffInfo = jsdiff.diffTrimmedLines(txta, txtb);
+        var diffInfo = jsdiff.diffTrimmedLines(source1, source2);
         let sametexts = ''
         diffInfo.forEach((info)=>{
             if(!info.removed && !info.added) {

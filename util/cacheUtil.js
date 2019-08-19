@@ -1,21 +1,16 @@
-/***
- * 144，115的本地cache目录，缓存一些信息
- * 
- */
-
 var fs = require('fs');
 var _ = require('lodash');
-let global = require('../util/global')
+let pathutil = require('path')
 var blueimp_md5 = require("blueimp-md5")//https://github.com/blueimp/JavaScript-MD5
+let makeDir = require('make-dir')
 
-let cache_folder = ``;
+let cache_folder = pathutil.resolve(__dirname,'../../codereview-redundant-cache/')
+makeDir.sync(`${cache_folder}`)
+console.log(`[cache]${cache_folder}`)
 
-let setRootFolder = (folder)=>{
-    cache_folder = folder;
-}
 let getFolder = (cacheType, id)=>{
     if(!fs.existsSync(cache_folder)){
-        console.log(`${cache_folder} not exist.`);
+        console.log(`cache_folder ${cache_folder} not exist.`);
         return;
     }
     let folder = `${cache_folder}/${cacheType}`;
@@ -51,7 +46,6 @@ module.exports = {
         return blueimp_md5(str);
     },
     cache_folder,
-    setRootFolder,
     setCache,
     getCache,
     removeCache,
