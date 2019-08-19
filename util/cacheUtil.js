@@ -8,6 +8,14 @@ let cache_folder = pathutil.resolve(__dirname,'../../codereview-redundant-cache/
 makeDir.sync(`${cache_folder}`)
 console.log(`[cache]${cache_folder}`)
 
+let getL1L2 = (id)=>{
+    let arr = id.split('-');
+    let hash1 = arr[0];
+    let hash2 = arr[1];
+    let l1 = hash1.substring(0,2);
+    let l2 = hash2.substring(0,2);
+    return `${l1}/${l2}`;
+}
 let getFolder = (cacheType, id)=>{
     if(!fs.existsSync(cache_folder)){
         console.log(`cache_folder ${cache_folder} not exist.`);
@@ -20,13 +28,16 @@ let getFolder = (cacheType, id)=>{
 let setCache = (cacheType, id, content)=>{
     let folder = getFolder(cacheType, id)
     if(!folder) return;
-    let fpath = `${folder}/${id}.cache`;
+    let l1l2 = getL1L2(id);
+    makeDir.sync(`${folder}/${l1l2}`)
+    let fpath = `${folder}/${l1l2}/${id}.cache`;
     fs.writeFileSync(fpath, content);
 }
 let getCache = (cacheType, id)=>{
     let folder = getFolder(cacheType, id)
     if(!folder) return;
-    let fpath = `${folder}/${id}.cache`;
+    let l1l2 = getL1L2(id);
+    let fpath = `${folder}/${l1l2}/${id}.cache`;
     if(!fs.existsSync(fpath)) return null;
     let content = fs.readFileSync(fpath, 'utf8')
     return content;
@@ -34,7 +45,8 @@ let getCache = (cacheType, id)=>{
 let removeCache = (cacheType, id)=>{
     let folder = getFolder(cacheType, id)
     if(!folder) return;
-    let fpath = `${folder}/${id}.cache`;
+    let l1l2 = getL1L2(id);
+    let fpath = `${folder}/${l1l2}/${id}.cache`;
     fs.unlinkSync(fpath, ()=>{
 
     });
@@ -45,6 +57,7 @@ module.exports = {
         str = str ? str : '';
         return blueimp_md5(str);
     },
+    getL1L2,
     cache_folder,
     setCache,
     getCache,
