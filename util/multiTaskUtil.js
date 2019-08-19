@@ -73,8 +73,8 @@ let thisUtil = {
         };
     },
     saveReport:(taskname, report)=>{
-        console.log('save', taskname)
         let filepath = pathutil.resolve(thisUtil.reportFolder, `./${taskname}`);
+        console.log('saved', taskname, filepath)
         let arr = [];
         report.forEach((o)=>{
             arr.push(`${o.a}:${o.b}=${o.l}`)

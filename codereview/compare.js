@@ -78,7 +78,15 @@ const thisUtil = {
         if(typeof debug === 'undefined') debug = false;
         let redundantLine = 0;
         //确保文件较小的在前，文件较大的在后
-        var diffInfo = source1.length < source2.length ? jsdiff.diffTrimmedLines(source1, source2) : jsdiff.diffTrimmedLines(source2, source1);
+        let txta,txtb;
+        if(source1.length < source2.length){
+            txta = source1;
+            txtb = source2;
+        }else{
+            txta = source2;
+            txtb = source1;
+        }
+        var diffInfo = jsdiff.diffTrimmedLines(txta, txtb);
         let sametexts = ''
         diffInfo.forEach((info)=>{
             if(!info.removed && !info.added) {
