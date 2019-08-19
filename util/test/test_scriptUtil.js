@@ -16,3 +16,10 @@ var a = 1;
 
 `, 'bb/bb.js')
 console.log(src)
+
+src = scriptUtil.cleanCode(`
+<div id="ahaha"> </div>
+
+
+`, 'bb/bb.tpl')
+console.log(src)

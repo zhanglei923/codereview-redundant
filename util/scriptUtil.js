@@ -16,18 +16,20 @@ let thisUtil = {
         return src;
     },
     cleanCode: (source, fpath)=>{
+        if(!source) source = '';
         let finfo = pathutil.parse(fpath);
         let ext = finfo.ext;
         if(ext) ext = ext.toLowerCase();
         if(ext === '.js' || ext === '.java'){
-            // if(path1.indexOf('createDialogCtrl')>=0) fs.writeFileSync('./a.js', source1)
-            // if(path2.indexOf('updateDialogCtrl')>=0) fs.writeFileSync('./b.js', source2)
             source = thisUtil.decomment(source);
             source = source.replace(lineBrkReg, lineBrkString);
             source = source.replace(/function[\s]{0,}\(/g, 'function(')
             source = source.replace(/(\r\n)?{/g, '{')
             source = source.replace(/( ){1,}/g,'')//防止有人格式化代码，绕过行对比
             source = source.replace(/\}( ){1,}\;/g,'};')//防止有人格式化代码，绕过行对比
+        }else{
+            source = source.replace(lineBrkReg, lineBrkString);
+            source = source.replace(/( ){1,}/g,'')//防止有人格式化代码，绕过行对比
         }
         return source;
     },
