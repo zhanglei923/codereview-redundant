@@ -7,6 +7,7 @@ let eachcontent = require('eachcontent-js')
 let scriptUtil = require('../util/scriptUtil')
 let multiTaskUtil = require('../util/multiTaskUtil')
 let displayUtil = require('../util/displayUtil')
+let cacheUtil = require('../util/cacheUtil')
 
 let fpathCount = 0;
 let fpathMap = {};

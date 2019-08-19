@@ -2,9 +2,11 @@ var fs = require('fs');
 var pathutil = require('path');
 var _ = require('lodash');
 var minimist = require('minimist');
+let makeDir = require('make-dir')
 const queryString = require('query-string');
 let multiTaskUtil = require('./util/multiTaskUtil')
 let scriptUtil = require('./util/scriptUtil')
+let cacheUtil = require('./util/cacheUtil')
 let generateTasks = require('./codereview/generateTasks')
 let runTasks = require('./codereview/runTasks')
 let filter_rkweb = require('./codereview/filters/filter-rk-web')
@@ -13,9 +15,15 @@ let cookiePath = pathutil.resolve(__dirname, './.tmp_info')
 fs.writeFileSync(cookiePath, JSON.stringify({}))//clean
 let reportsPath = pathutil.resolve(__dirname,'../codereview-redundant-reports/')
 let tasksPath = pathutil.resolve(__dirname,'../codereview-redundant-tasks/')
+let cachePath = pathutil.resolve(__dirname,'../codereview-redundant-cache/')
 //if (!fs.existsSync(reportsPath)){fs.mkdirSync(reportsPath)}
-if (!fs.existsSync(tasksPath)){fs.mkdirSync(tasksPath)}
+makeDir.sync(`${tasksPath}`)
 if (!fs.existsSync('./.reports')){fs.mkdirSync('./.reports')}
+makeDir.sync(`${cachePath}`)
+
+cacheUtil.setRootFolder(cachePath)
+//cacheUtil.setCache('compaire_result', 'xxxxx', 'bbb')
+
 multiTaskUtil.init(tasksPath)
 
 var terminalOps = minimist(process.argv.slice(2), {});
