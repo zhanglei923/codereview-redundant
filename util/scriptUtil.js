@@ -18,7 +18,8 @@ let thisUtil = {
     cleanCode: (source, fpath)=>{
         let finfo = pathutil.parse(fpath);
         let ext = finfo.ext;
-        if(ext && ext.toLowerCase()=== '.js'){
+        if(ext) ext = ext.toLowerCase();
+        if(ext === '.js' || ext === '.java'){
             // if(path1.indexOf('createDialogCtrl')>=0) fs.writeFileSync('./a.js', source1)
             // if(path2.indexOf('updateDialogCtrl')>=0) fs.writeFileSync('./b.js', source2)
             source = thisUtil.decomment(source);
