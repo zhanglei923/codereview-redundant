@@ -55,7 +55,7 @@ const thisUtil = {
             let key = hash1 + '-' + hash2;
 
             let reddntLine = cacheUtil.getCache('compared_linenum', key)
-            if(typeof reddntLine === 'undefined'){
+            if(typeof reddntLine === 'undefined' || reddntLine === null){
                 source1 = scriptUtil.cleanCode(source1, path1)
                 source2 = scriptUtil.cleanCode(source2, path2);
     
