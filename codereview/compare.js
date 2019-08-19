@@ -37,8 +37,8 @@ const thisUtil = {
             let source1 = fs.readFileSync(path1,'utf8');//fpathmap[path1];
             let source2 = fs.readFileSync(path2,'utf8');//fpathmap[path2];
 
-            source1 = scriptUtil.cleanCode(source1)
-            source2 = scriptUtil.cleanCode(source2);
+            source1 = scriptUtil.cleanCode(source1, path1)
+            source2 = scriptUtil.cleanCode(source2, path2);
 
             //console.log(source1, source2)
             let reddntLine = thisUtil.getRedundantLine(source1, source2);
