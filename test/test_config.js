@@ -12,7 +12,8 @@
     //"targetFolder": "/Users/zhanglei/workspaces/apps-ingage-web/src/main/webapp/static/source/oa/js/approval",
     //"targetFolder": "/Users/zhanglei/workspaces/apps-ingage-web/src/main/webapp/static/source/oa/",
     "targetFolder": "/Users/zhanglei/workspaces/apps-ingage-web/src/main/webapp/static/source/designer/",
-    "cacheFolder": "/Users/zhanglei/workspaces/apps-ingage-web_cache/",
+    //"cacheFolder": "/Users/zhanglei/workspaces/apps-ingage-web_cache/",
+    "cacheFolder": null,//"/Users/zhanglei/workspaces/apps-ingage-web_cache/",
     "filetypes": ["js","tpl",/\.aaa$/,/\.bbb$/],
     "acceptFileFilter": (fpath)=>{
         if(    /\/lib\//g.test(fpath)
