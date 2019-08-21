@@ -5,8 +5,6 @@ var blueimp_md5 = require("blueimp-md5")//https://github.com/blueimp/JavaScript-
 let makeDir = require('make-dir')
 
 let cache_folder = pathutil.resolve(__dirname,'../../codereview-redundant-cache/')
-makeDir.sync(`${cache_folder}`)
-console.log(`[cache]${cache_folder}`)
 
 let getL1L2 = (id)=>{
     let arr = id.split('-');
@@ -16,6 +14,15 @@ let getL1L2 = (id)=>{
     let l2 = hash2.substring(0,2);
     return `${l1}/${l2}`;
 }
+let serRootFolder = (folder)=>{
+    if(!fs.existsSync(folder)){
+        console.error('[ERROR] cache folder not found:'+ folder)
+    }
+    cache_folder = folder;
+    makeDir.sync(`${cache_folder}`)
+    console.log(`[cache]${cache_folder}`)
+}
+serRootFolder(cache_folder)
 let getFolder = (cacheType, id)=>{
     if(!fs.existsSync(cache_folder)){
         console.log(`cache_folder ${cache_folder} not exist.`);
@@ -57,6 +64,7 @@ module.exports = {
         str = str ? str : '';
         return blueimp_md5(str);
     },
+    serRootFolder,
     getL1L2,
     cache_folder,
     setCache,

@@ -59,7 +59,7 @@ let taskId = generateTasks.generate(codePath, {
                             acceptFileTypes: fileExts,//[/.js$/, /.tpl$/],
                             functions: filterFuns
                         });
-fs.writeFileSync(cookiePath, JSON.stringify({tasksPath, taskId}))
+fs.writeFileSync(cookiePath, JSON.stringify({tasksPath, taskId, configPath}))
 //runTasks.run(codePath);
 //
 // fs.writeFileSync('./.report/report.json', JSON.stringify(report))

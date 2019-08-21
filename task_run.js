@@ -3,6 +3,7 @@ var pathutil = require('path');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
 const multiTaskUtil = require('./util/multiTaskUtil')
+let cacheUtil = require('./util/cacheUtil')
 let compare = require('./codereview/compare')
 
 let MSG_REQUEST_TASKID = 'request_taskid';
@@ -12,10 +13,16 @@ let tmp_info = fs.readFileSync(pathutil.resolve(__dirname, './.tmp_info'), 'utf8
 tmp_info = JSON.parse(tmp_info);
 let taskId = tmp_info.taskId;
 let tasksPath = tmp_info.tasksPath;
+let configPath = tmp_info.configPath;
 if(!taskId || !tasksPath){
   console.log('can not find taskId/tasksPath:', taskId, tasksPath)
   return;
 }
+let configTxt = fs.readFileSync(configPath, 'utf8')
+let config = {};
+eval(`config=${configTxt}`)
+if(config.cacheFolder)cacheUtil.serRootFolder(config.cacheFolder)
+
 multiTaskUtil.init(tasksPath, taskId);
 multiTaskUtil.initTaskFolder();
 multiTaskUtil.loadFileMap();
