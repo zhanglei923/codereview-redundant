@@ -6,12 +6,17 @@ let makeDir = require('make-dir')
 
 let cache_folder = pathutil.resolve(__dirname,'../../codereview-redundant-cache/')
 
-let getL1L2 = (id)=>{
+let getL1L2_bk = (id)=>{
     let arr = id.split('-');
     let hash1 = arr[0];
     let hash2 = arr[1];
     let l1 = hash1.substring(0,2);
     let l2 = hash2.substring(0,2);
+    return `${l1}/${l2}`;
+}
+let getL1L2 = (id)=>{
+    let l1 = id.substring(0,2);
+    let l2 = id.substring(2,4);
     return `${l1}/${l2}`;
 }
 let serRootFolder = (folder)=>{
