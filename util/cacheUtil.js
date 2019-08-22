@@ -42,14 +42,14 @@ let setCache = (cacheType, id, content)=>{
     if(!folder) return;
     let l1l2 = getL1L2(id);
     makeDir.sync(`${folder}/${l1l2}`)
-    let fpath = `${folder}/${l1l2}/${id}.cache`;
+    let fpath = `${folder}/${l1l2}/${id}.ca`;
     fs.writeFileSync(fpath, content);
 }
 let getCache = (cacheType, id)=>{
     let folder = getFolder(cacheType, id)
     if(!folder) return;
     let l1l2 = getL1L2(id);
-    let fpath = `${folder}/${l1l2}/${id}.cache`;
+    let fpath = `${folder}/${l1l2}/${id}.ca`;
     if(!fs.existsSync(fpath)) return null;
     let content = fs.readFileSync(fpath, 'utf8')
     return content;
@@ -58,7 +58,7 @@ let removeCache = (cacheType, id)=>{
     let folder = getFolder(cacheType, id)
     if(!folder) return;
     let l1l2 = getL1L2(id);
-    let fpath = `${folder}/${l1l2}/${id}.cache`;
+    let fpath = `${folder}/${l1l2}/${id}.ca`;
     fs.unlinkSync(fpath, ()=>{
 
     });
