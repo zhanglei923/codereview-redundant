@@ -54,6 +54,7 @@ const thisUtil = {
             // let hash1 = cacheUtil.md5(source1);
             // let hash2 = cacheUtil.md5(source2);
             let hhhh = cacheUtil.md5(ssss);
+            ssss = null;
             let key = hhhh;
 
             let reddntLine = cacheUtil.getCache('compared_linenum', key)
