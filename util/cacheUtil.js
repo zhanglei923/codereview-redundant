@@ -16,8 +16,9 @@ let getL1L2_bk = (id)=>{
 }
 let getL1L2 = (id)=>{
     let l1 = id.substring(0,2);
-    //let l2 = id.substring(2,4);
-    return `${l1}`;
+    let l2 = id.substring(2,3);
+    l2 = isNaN(l2) ? '' : l2;
+    return `${l1}${l2}`;
 }
 let serRootFolder = (folder)=>{
     if(!fs.existsSync(folder)){
