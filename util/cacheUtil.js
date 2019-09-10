@@ -10,6 +10,18 @@ let getL1L2 = (id)=>{
     let arr = id.split('-');
     let hash1 = arr[0];
     let hash2 = arr[1];
+    let l11 = hash1.substring(0,1);
+    let l12 = hash1.substring(1,2);
+    l12 = isNaN(l12) ? '' : l12;
+    let l21 = hash2.substring(0,1);
+    let l22 = hash2.substring(1,2);
+    l22 = isNaN(l22) ? '' : l22;
+    return `${l11}${l12}/${l21}${l22}`;
+}
+let getL1L2_bkup2 = (id)=>{
+    let arr = id.split('-');
+    let hash1 = arr[0];
+    let hash2 = arr[1];
     let l1 = hash1.substring(0,2);
     let l2 = hash2.substring(0,2);
     return `${l1}/${l2}`;
