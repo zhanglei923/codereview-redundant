@@ -50,15 +50,15 @@ const thisUtil = {
             source1 = txta;
             source2 = txtb;
 
-            // let ssss = source1+source2;
-            // // let hash1 = cacheUtil.md5(source1);
-            // // let hash2 = cacheUtil.md5(source2);
-            // let hhhh = cacheUtil.md5(ssss);
-            // ssss = null;
+            let ssss = source1+source2;
+            // let hash1 = cacheUtil.md5(source1);
+            // let hash2 = cacheUtil.md5(source2);
+            let hhhh = cacheUtil.md5(ssss);
+            ssss = null;
 
-            let hash1 = cacheUtil.md5(source1);
-            let hash2 = cacheUtil.md5(source2);
-            let key = `${hash1}-${hash2}`;
+            // let hash1 = cacheUtil.md5(source1);
+            // let hash2 = cacheUtil.md5(source2);
+            let key = `${hhhh}`;
 
             let reddntLine = cacheUtil.getCache('compared_linenum', key)
             if(typeof reddntLine === 'undefined' || reddntLine === null){
