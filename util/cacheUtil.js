@@ -56,7 +56,12 @@ let setCache = (cacheType, id, content)=>{
     let l1l2 = getL1L2(id);
     makeDir.sync(`${folder}/${l1l2}`)
     let fpath = `${folder}/${l1l2}/${id}.ca`;
-    fs.writeFileSync(fpath, content);
+    if(content === '0' || content === 0 || !content) content = '';
+    try{
+        fs.writeFileSync(fpath, content);
+    }catch(e){
+        console.log(e);
+    }
 }
 let getCache = (cacheType, id)=>{
     let folder = getFolder(cacheType, id)
@@ -65,6 +70,7 @@ let getCache = (cacheType, id)=>{
     let fpath = `${folder}/${l1l2}/${id}.ca`;
     if(!fs.existsSync(fpath)) return null;
     let content = fs.readFileSync(fpath, 'utf8')
+    if(!content) content = 0;
     return content;
 }
 let removeCache = (cacheType, id)=>{
