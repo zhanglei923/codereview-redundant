@@ -14,7 +14,7 @@
     "targetFolder": "/Users/zhanglei/workspaces/apps-ingage-web/src/main/webapp/static/source/designer/",
     //"cacheFolder": "/Users/zhanglei/workspaces/apps-ingage-web_cache/",
     //"cacheFolder": null,
-    "cacheFolder": "/Users/zhanglei/workspaces/apps-ingage-web_cache/",
+    "cacheFolder": "/Volumes/ssd01/codereview-redundant-cache/",
     "filetypes": ["js","tpl",/\.aaa$/,/\.bbb$/],
     "acceptFileFilter": (fpath)=>{
         if(    /\/lib\//g.test(fpath)
