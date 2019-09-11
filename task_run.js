@@ -28,7 +28,7 @@ multiTaskUtil.initTaskFolder();
 multiTaskUtil.loadFileMap();
 
 if (cluster.isMaster) {
-  let numWorks = numCPUs+2;
+  let numWorks = numCPUs;
   console.log(`numCPUs ${numCPUs}`);
   console.log(`numWorks ${numWorks}`);
   console.log(`Master=${process.pid}`);
