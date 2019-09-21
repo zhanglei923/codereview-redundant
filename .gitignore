@@ -4,3 +4,4 @@ node_modules/
 .tmp_info
 /testdata/
 /testdatarpt/
+debuginfo/
