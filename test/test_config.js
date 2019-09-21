@@ -27,6 +27,7 @@
             || /\-sdk\-/g.test(fpath)
             || /node_modules/g.test(fpath)
             || /styleSetConfig\.js$/.test(fpath)
+            || /dataSetConfig\.js$/.test(fpath)
             
         ) {
             return false;
