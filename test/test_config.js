@@ -11,10 +11,10 @@
 {
     //"targetFolder": "/Users/zhanglei/workspaces/apps-ingage-web/src/main/webapp/static/source/oa/js/approval",
     //"targetFolder": "/Users/zhanglei/workspaces/apps-ingage-web/src/main/webapp/static/source/oa/",
-    "targetFolder": "/Users/zhanglei/workspaces/apps-ingage-web/src/main/webapp/static/source/designer/",
-    //"cacheFolder": "/Users/zhanglei/workspaces/apps-ingage-web_cache/",
+    "targetFolder": "/Users/zhanglei/workspaces/apps-ingage-web/src/main/webapp/static/source/",
+    "cacheFolder": "/Users/zhanglei/workspaces/apps-ingage-web_cache/",
     //"cacheFolder": null,
-    "cacheFolder": "/Volumes/ssd01/codereview-redundant-cache/",
+    //"cacheFolder": "/Volumes/ssd01/codereview-redundant-cache/",
     "filetypes": ["js","tpl",/\.aaa$/,/\.bbb$/],
     "acceptFileFilter": (fpath)=>{
         if(    /\/lib\//g.test(fpath)
@@ -26,7 +26,8 @@
             || /\/province_data/g.test(fpath)
             || /\-sdk\-/g.test(fpath)
             || /node_modules/g.test(fpath)
-        
+            || /styleSetConfig\.js$/.test(fpath)
+            
         ) {
             return false;
         }else if(/business\-widgets/g.test(fpath)) {
