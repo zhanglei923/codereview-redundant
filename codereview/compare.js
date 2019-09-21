@@ -82,6 +82,11 @@ const thisUtil = {
                             )
                 timems = new Date();
             }
+            if(costms > 2*60*1000){
+                console.log('loooongtime:', costms)
+                console.log('path1=', path1)
+                console.log('path2=', path2)
+            }
             report.push({
                 a:key1, 
                 b:key2,
