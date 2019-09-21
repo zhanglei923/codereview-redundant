@@ -74,13 +74,13 @@ const thisUtil = {
             }
             //console.log(reddntLine, path1+':'+path2)
             let count = i;
+            let costms = new Date() - timems;
+            timems = new Date();
             if(count % 477 === 0) {
-                let costms = new Date() - timems;
                 console.log(`[${displayUtil.percentage(currentTaskNum, totalTaskNum)}%]#${workerId}:tasks=${currentTaskNum}/${totalTaskNum}`, 
                             'ms='+costms, 
                             '('+displayUtil.percentage(count, pairs.length)+'%)'
                             )
-                timems = new Date();
             }
             if(costms > 2*60*1000){
                 console.log('loooongtime:', costms)
