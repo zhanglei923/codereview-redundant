@@ -13,7 +13,15 @@ let lineBrkString = '\r\n';
 let fpathCount = 0;
 let fpathMap = {};
 
+
+let trimPath = (pathstr)=>{
+    pathstr = pathstr.replace(/\\{1,}/g,'/');
+    pathstr = pathstr.replace(/\/{1,}/g,'/');
+    return pathstr;
+};
+
 const thisUtil = {
+    trimPath,
     generate: (codePath, filters, callback) =>{
         let info = thisUtil.getFilePathMap(codePath, filters);
         let taskId = thisUtil.generateMultiTasks(info);
@@ -25,6 +33,7 @@ const thisUtil = {
         let fpathMap = {};
         let runFilters = (fpath)=>{
             let ok = true;
+            fpath = trimPath(fpath);
             filters.functions.forEach((filter)=>{
                 if(filter(fpath)===false) ok = false;
             })
