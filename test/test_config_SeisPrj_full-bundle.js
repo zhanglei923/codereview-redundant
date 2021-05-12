@@ -12,6 +12,7 @@
             if(    /\/lib\//g.test(fpath)
                 //|| /\/i18n\//g.test(fpath)
                 || /\.bundle\./g.test(fpath)
+                || /\_bundle/g.test(fpath)
                 || /\.min\./g.test(fpath)
                 //|| /\/default_cn/g.test(fpath)
                 || /\/dist\//g.test(fpath)
