@@ -1,4 +1,4 @@
-// sh run.sh ./test/test_config_SeisPrj_full-bundle.js
+//  sh run.sh D:/workspacesZL/codereview-redundant/test/test_config_SeisPrj_full-bundle.js
 
 {
     //"targetFolder": "/Users/zhanglei/workspaces/apps-ingage-web/src/main/webapp/static/source/oa/js/approval",

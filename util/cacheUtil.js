@@ -58,9 +58,10 @@ let setCache = (cacheType, id, content)=>{
     let fpath = `${folder}/${l1l2}/${id}.ca`;
     if(content === '0' || content === 0 || !content) content = '';
     try{
-        fs.writeFileSync(fpath, content);
+        fs.writeFileSync(fpath, content+'');
     }catch(e){
-        console.log(e);
+        //console.log(e);
+        console.log(`err when cache: ${fpath}`, typeof content)
     }
 }
 let getCache = (cacheType, id)=>{
